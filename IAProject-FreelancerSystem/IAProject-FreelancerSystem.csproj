@@ -177,11 +177,17 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="BL\Jobs.cs" />
+    <Compile Include="BL\Proposals.cs" />
+    <Compile Include="BL\Rates.cs" />
+    <Compile Include="BL\SavedJobs.cs" />
+    <Compile Include="BL\User.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\DBConnect.cs" />
+    <Compile Include="Models\RateDB.cs" />
+    <Compile Include="Models\UserDB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -9,7 +9,7 @@ using MySql.Data.MySqlClient;
 
 namespace IAProject_FreelancerSystem.Models
 {
-    class DBConnect
+    public class UserDB
     {
         private MySqlConnection connection;
         private string server;
@@ -18,7 +18,7 @@ namespace IAProject_FreelancerSystem.Models
         private string password;
 
         //Constructor
-        public DBConnect()
+        public UserDB()
         {
             Initialize();
         }
@@ -82,9 +82,26 @@ namespace IAProject_FreelancerSystem.Models
         }
 
         //Insert statement
-        public void Insert(string _query)
+        public void Insert(BL.User user)
         {
-            string query = _query; // "INSERT INTO tableinfo (name, age) VALUES('John Smith', '33')"
+            string query = "INSERT INTO users (" +
+                "userPassword, " +
+                "userName, " +
+                "fName, " +
+                "lName, " +
+                "email, " +
+                "phoneNum, " +
+                "userPhoto, " +
+                "role) VALUES(" +
+                user.userPassword +
+                user.userName +
+                user.fName +
+                user.lName +
+                user.email +
+                user.phoneNum +
+                user.userPhoto +
+                user.role + 
+                ")";
 
             //open connection
             if (this.OpenConnection() == true)
@@ -101,9 +118,18 @@ namespace IAProject_FreelancerSystem.Models
         }
 
         //Update statement
-        public void Update(string _query)
+        public void Update(BL.User user)
         {
-            string query = _query; // "UPDATE tableinfo SET name='Joe', age='22' WHERE name='John Smith'"
+            string query = "UPDATE users SET " +
+                "userPassword=" + user.userPassword +
+                "userName=" + user.userName +
+                "fName=" + user.fName +
+                "lName=" + user.lName +
+                "email=" + user.email +
+                "phoneNum=" + user.phoneNum +
+                "userPhoto=" + user.userPhoto +
+                "role=" + user.role +
+                "WHERE userID=" + user.userID;
 
             //Open connection
             if (this.OpenConnection() == true)
@@ -124,9 +150,9 @@ namespace IAProject_FreelancerSystem.Models
         }
 
         //Delete statement
-        public void Delete(string _query)
+        public void Delete(string userID)
         {
-            string query = _query; // "DELETE FROM tableinfo WHERE name='John Smith'"
+            string query = "DELETE FROM users WHERE userID=" + userID;
 
             if (this.OpenConnection() == true)
             {
@@ -136,16 +162,13 @@ namespace IAProject_FreelancerSystem.Models
             }
         }
 
-        //Select statement
-        public List<string>[] Select(string _query)
+        //Select statement with UserID
+        public BL.User SelectwithId(string userID)
         {
-            string query = _query; // "SELECT * FROM tableinfo"
+            string query = "SELECT * FROM users where userID = " + userID;
 
-            //Create a list to store the result
-            List<string>[] list = new List<string>[3];
-            list[0] = new List<string>();
-            list[1] = new List<string>();
-            list[2] = new List<string>();
+            //Create a Object to store the result
+            BL.User user = new BL.User();
 
             //Open connection
             if (this.OpenConnection() == true)
@@ -158,9 +181,62 @@ namespace IAProject_FreelancerSystem.Models
                 //Read the data and store them in the list
                 while (dataReader.Read())
                 {
-                    list[0].Add(dataReader["id"] + "");
-                    list[1].Add(dataReader["name"] + "");
-                    list[2].Add(dataReader["age"] + "");
+                    user.userID = Int32.Parse(dataReader["userID"].ToString());
+                    user.userPassword = dataReader["userPassword"].ToString();
+                    user.userName = dataReader["userName"].ToString();
+                    user.fName = dataReader["fName"].ToString();
+                    user.lName = dataReader["lName"].ToString();
+                    user.email = dataReader["email"].ToString();
+                    user.phoneNum = dataReader["phoneNum"].ToString();
+                    user.userPhoto = dataReader["userPhoto"].ToString();
+                    user.role = dataReader["role"].ToString();
+                }
+
+                //close Data Reader
+                dataReader.Close();
+
+                //close Connection
+                this.CloseConnection();
+
+                //return list to be displayed
+                return user;
+            }
+            else
+            {
+                return user;
+            }
+        }
+        
+        //Select statement
+        public List<BL.User> SelectAll()
+        {
+            string query = "SELECT * FROM users";
+
+            //Create a list to store the result
+            List<BL.User> list = new List<BL.User>();
+
+            //Open connection
+            if (this.OpenConnection() == true)
+            {
+                //Create Command
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                //Create a data reader and Execute the command
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                //Read the data and store them in the list
+                while (dataReader.Read())
+                {
+                    BL.User user = new BL.User();
+                    user.userID = Int32.Parse(dataReader["userID"].ToString());
+                    user.userPassword = dataReader["userPassword"].ToString();
+                    user.userName = dataReader["userName"].ToString();
+                    user.fName = dataReader["fName"].ToString();
+                    user.lName = dataReader["lName"].ToString();
+                    user.email = dataReader["email"].ToString();
+                    user.phoneNum = dataReader["phoneNum"].ToString();
+                    user.userPhoto = dataReader["userPhoto"].ToString();
+                    user.role = dataReader["role"].ToString();
+                    list.Add(user);
                 }
 
                 //close Data Reader
@@ -179,9 +255,9 @@ namespace IAProject_FreelancerSystem.Models
         }
 
         //Count statement
-        public int Count(string _query)
+        public int Count()
         {
-            string query = _query; // "SELECT Count(*) FROM tableinfo";
+            string query = "SELECT Count(*) FROM users";
             int Count = -1;
 
             //Open Connection
@@ -203,6 +279,5 @@ namespace IAProject_FreelancerSystem.Models
                 return Count;
             }
         }
-
     }
 }
