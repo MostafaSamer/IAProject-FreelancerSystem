@@ -182,6 +182,7 @@
     <Compile Include="BL\Rates.cs" />
     <Compile Include="BL\SavedJobs.cs" />
     <Compile Include="BL\User.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -223,12 +224,16 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Dashboard\Profile.cshtml" />
+    <Content Include="Views\Dashboard\UsersPage.cshtml" />
+    <Content Include="Views\Dashboard\PostsPage.cshtml" />
+    <Content Include="Views\Dashboard\PostsRequests.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -28,7 +28,7 @@ namespace IAProject_FreelancerSystem.Models
         {
             server = "localhost";
             database = "freelance";
-            uid = "admin";
+            uid = "root";
             password = "";
             string connectionString;
             connectionString = "SERVER=" + server + ";" + "DATABASE=" +
