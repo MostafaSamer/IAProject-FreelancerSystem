@@ -11,6 +11,10 @@ namespace IAProject_FreelancerSystem.Controllers
         // GET: Dashboard
         public ActionResult Profile()
         {
+            BL.User user = new BL.User();
+            user = new Models.UserDB().SelectwithId("1");
+            ViewData["User"] = user;
+
             return View();
         }
 
