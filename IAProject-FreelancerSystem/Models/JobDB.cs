@@ -82,7 +82,7 @@ namespace IAProject_FreelancerSystem.Models
         }
 
         //Insert statement
-        public void Insert(BL.Jobs job)
+        public void Insert(Models.Job job)
         {
             string query = "INSERT INTO jobs (" +
                 "freelancerID, " +
@@ -124,7 +124,7 @@ namespace IAProject_FreelancerSystem.Models
         }
 
         //Update statement
-        public void Update(BL.Jobs job)
+        public void Update(Models.Job job)
         {
             string query = "UPDATE jobs SET " +
                 "freelancerID=" + job.freelancerID +
@@ -172,12 +172,12 @@ namespace IAProject_FreelancerSystem.Models
         }
 
         //Select statement with UserID
-        public BL.Jobs SelectwithId(string jobID)
+        public Models.Job SelectwithId(string jobID)
         {
             string query = "SELECT * FROM jobs where jobID = " + jobID;
 
             //Create a Object to store the result
-            BL.Jobs job = new BL.Jobs();
+            Models.Job job = new Models.Job();
 
             //Open connection
             if (this.OpenConnection() == true)
@@ -220,12 +220,12 @@ namespace IAProject_FreelancerSystem.Models
         }
         
         //Select statement
-        public List<BL.Jobs> SelectAll()
+        public List<Models.Job> SelectAll()
         {
             string query = "SELECT * FROM jobs";
 
             //Create a list to store the result
-            List<BL.Jobs> list = new List<BL.Jobs>();
+            List<Models.Job> list = new List<Models.Job>();
 
             //Open connection
             if (this.OpenConnection() == true)
@@ -238,7 +238,7 @@ namespace IAProject_FreelancerSystem.Models
                 //Read the data and store them in the list
                 while (dataReader.Read())
                 {
-                    BL.Jobs job = new BL.Jobs();
+                    Models.Job job = new Models.Job();
                     job.jobID = Int32.Parse(dataReader["jobID"].ToString());
                     job.freelancerID = Int32.Parse(dataReader["freelancerID"].ToString());
                     job.clientID = Int32.Parse(dataReader["clientID"].ToString());

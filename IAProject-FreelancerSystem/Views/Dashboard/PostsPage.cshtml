@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@{
+    ViewBag.Title = "Index";
+    var Jobs = ViewData["Jobs"] as List<IAProject_FreelancerSystem.Models.Job>;
+}
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -29,7 +34,63 @@
         </div>
     </div>
     <div class="container body-content">
-        <h2>PostsPage</h2>
+        <h2>Posts Page</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Client</th>
+                    <th>Budget</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>jobStatus</th>
+                    <th>Rate</th>
+                    <th>propCount</th>
+                    <th>Date</th>
+                    <th>Accept</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Jobs.Count(); i++)
+                {
+                    <tr>
+                        <th>
+                            @Jobs[i].jobTitle
+                        </th>
+                        <th>
+                            @Jobs[i].clientID
+                        </th>
+                        <th>
+                            @Jobs[i].jobBudget
+                        </th>
+                        <th>
+                            @Jobs[i].jobType
+                        </th>
+                        <th>
+                            @Jobs[i].jobDescription
+                        </th>
+                        <th>
+                            @Jobs[i].jobStatus
+                        </th>
+                        <th>
+                            @Jobs[i].jobAVGRate
+                        </th>
+                        <th>
+                            @Jobs[i].propCount
+                        </th>
+                        <th>
+                            @Jobs[i].creationDate
+                        </th>
+                        <th>
+                            @Jobs[i].jobAdminAcceptance
+                        </th>
+                    </tr>
+                    <div>
+                    </div>
+                }
+
+            </tbody>
+        </table>
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>

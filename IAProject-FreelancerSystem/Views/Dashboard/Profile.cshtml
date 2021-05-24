@@ -1,9 +1,6 @@
 ﻿@{
     ViewBag.Title = "Index";
-}
-
-@{
-    var prod = ViewData["User"] as IAProject_FreelancerSystem.BL.User;
+    var user = ViewData["User"] as IAProject_FreelancerSystem.Models.User;
 }
 
 <!DOCTYPE html>
@@ -38,7 +35,11 @@
     </div>
     <div class="container body-content">
         <h2>Profile</h2>
-        <h3>@prod.email</h3>
+        <h3>Image: @user.userPhoto</h3>
+        <h3>Name: @user.fName  @user.lName</h3>
+        <h3>User Name: @user.userName</h3>
+        <h3>Email: @user.email</h3>
+        <h3>Phone Number: @user.phoneNum</h3>
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
