@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace IAProject_FreelancerSystem.BL
+namespace IAProject_FreelancerSystem.Models
 {
-    public class Jobs
+    public class Job
     {
         public int jobID { set; get; }
         public int freelancerID { set; get; }

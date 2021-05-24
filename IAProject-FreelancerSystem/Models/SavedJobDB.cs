@@ -9,7 +9,7 @@ using MySql.Data.MySqlClient;
 
 namespace IAProject_FreelancerSystem.Models
 {
-    public class SavedJobsDB
+    public class SavedJobDB
     {
         private MySqlConnection connection;
         private string server;
@@ -18,7 +18,7 @@ namespace IAProject_FreelancerSystem.Models
         private string password;
 
         //Constructor
-        public SavedJobsDB()
+        public SavedJobDB()
         {
             Initialize();
         }
@@ -82,7 +82,7 @@ namespace IAProject_FreelancerSystem.Models
         }
 
         //Insert statement
-        public void Insert(BL.SavedJobs savedJobs)
+        public void Insert(Models.SavedJob savedJobs)
         {
             string query = "INSERT INTO savedjobs (" +
                 "freelancerID, " +
@@ -112,7 +112,7 @@ namespace IAProject_FreelancerSystem.Models
         }
 
         //Update statement
-        public void Update(BL.SavedJobs savedJobs)
+        public void Update(Models.SavedJob savedJobs)
         {
             string query = "UPDATE savedjobs SET " +
                 "freelancerID=" + savedJobs.freelancerID +
@@ -154,12 +154,12 @@ namespace IAProject_FreelancerSystem.Models
         }
 
         //Select statement with UserID
-        public BL.SavedJobs SelectwithId(string savedID)
+        public Models.SavedJob SelectwithId(string savedID)
         {
             string query = "SELECT * FROM savedjobs where savedID = " + savedID;
 
             //Create a Object to store the result
-            BL.SavedJobs savedJobs = new BL.SavedJobs();
+            Models.SavedJob savedJobs = new Models.SavedJob();
 
             //Open connection
             if (this.OpenConnection() == true)
@@ -196,12 +196,12 @@ namespace IAProject_FreelancerSystem.Models
         }
         
         //Select statement
-        public List<BL.SavedJobs> SelectAll()
+        public List<Models.SavedJob> SelectAll()
         {
             string query = "SELECT * FROM savedjobs";
 
             //Create a list to store the result
-            List<BL.SavedJobs> list = new List<BL.SavedJobs>();
+            List<Models.SavedJob> list = new List<Models.SavedJob>();
 
             //Open connection
             if (this.OpenConnection() == true)
@@ -214,7 +214,7 @@ namespace IAProject_FreelancerSystem.Models
                 //Read the data and store them in the list
                 while (dataReader.Read())
                 {
-                    BL.SavedJobs savedJobs = new BL.SavedJobs();
+                    Models.SavedJob savedJobs = new Models.SavedJob();
                     savedJobs.savedID = Int32.Parse(dataReader["savedID"].ToString());
                     savedJobs.freelancerID = Int32.Parse(dataReader["freelancerID"].ToString());
                     savedJobs.jobID = Int32.Parse(dataReader["jobID"].ToString());

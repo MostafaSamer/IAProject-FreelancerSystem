@@ -82,7 +82,7 @@ namespace IAProject_FreelancerSystem.Models
         }
 
         //Insert statement
-        public void Insert(BL.User user)
+        public void Insert(Models.User user)
         {
             string query = "INSERT INTO users (" +
                 "userPassword, " +
@@ -118,7 +118,7 @@ namespace IAProject_FreelancerSystem.Models
         }
 
         //Update statement
-        public void Update(BL.User user)
+        public void Update(Models.User user)
         {
             string query = "UPDATE users SET " +
                 "userPassword=" + user.userPassword +
@@ -163,12 +163,12 @@ namespace IAProject_FreelancerSystem.Models
         }
 
         //Select statement with UserID
-        public BL.User SelectwithId(string userID)
+        public Models.User SelectwithId(string userID)
         {
             string query = "SELECT * FROM users where userID = " + userID;
 
             //Create a Object to store the result
-            BL.User user = new BL.User();
+            Models.User user = new Models.User();
 
             //Open connection
             if (this.OpenConnection() == true)
@@ -208,12 +208,12 @@ namespace IAProject_FreelancerSystem.Models
         }
         
         //Select statement
-        public List<BL.User> SelectAll()
+        public List<Models.User> SelectAll()
         {
             string query = "SELECT * FROM users";
 
             //Create a list to store the result
-            List<BL.User> list = new List<BL.User>();
+            List<Models.User> list = new List<Models.User>();
 
             //Open connection
             if (this.OpenConnection() == true)
@@ -226,7 +226,7 @@ namespace IAProject_FreelancerSystem.Models
                 //Read the data and store them in the list
                 while (dataReader.Read())
                 {
-                    BL.User user = new BL.User();
+                    Models.User user = new Models.User();
                     user.userID = Int32.Parse(dataReader["userID"].ToString());
                     user.userPassword = dataReader["userPassword"].ToString();
                     user.userName = dataReader["userName"].ToString();

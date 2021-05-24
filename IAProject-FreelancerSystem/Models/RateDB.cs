@@ -82,7 +82,7 @@ namespace IAProject_FreelancerSystem.Models
         }
 
         //Insert statement
-        public void Insert(BL.Rates rate)
+        public void Insert(Models.Rate rate)
         {
             string query = "INSERT INTO rates (" +
                 "jobID, " +
@@ -108,7 +108,7 @@ namespace IAProject_FreelancerSystem.Models
         }
 
         //Update statement
-        public void Update(BL.Rates rate)
+        public void Update(Models.Rate rate)
         {
             string query = "UPDATE rates SET " +
                 "jobID=" + rate.jobID +
@@ -148,12 +148,12 @@ namespace IAProject_FreelancerSystem.Models
         }
 
         //Select statement with UserID
-        public BL.Rates SelectwithId(string rateID)
+        public Models.Rate SelectwithId(string rateID)
         {
             string query = "SELECT * FROM rates where rateID  = " + rateID;
 
             //Create a Object to store the result
-            BL.Rates rate = new BL.Rates();
+            Models.Rate rate = new Models.Rate();
 
             //Open connection
             if (this.OpenConnection() == true)
@@ -188,12 +188,12 @@ namespace IAProject_FreelancerSystem.Models
         }
         
         //Select statement
-        public List<BL.Rates> SelectAll()
+        public List<Models.Rate> SelectAll()
         {
             string query = "SELECT * FROM rates";
 
             //Create a list to store the result
-            List<BL.Rates> list = new List<BL.Rates>();
+            List<Models.Rate> list = new List<Models.Rate>();
 
             //Open connection
             if (this.OpenConnection() == true)
@@ -206,7 +206,7 @@ namespace IAProject_FreelancerSystem.Models
                 //Read the data and store them in the list
                 while (dataReader.Read())
                 {
-                    BL.Rates rate = new BL.Rates();
+                    Models.Rate rate = new Models.Rate();
                     rate.rateID = Int32.Parse(dataReader["rateID"].ToString());
                     rate.jobID = Int32.Parse(dataReader["jobID"].ToString());
                     rate.freelancerID = Int32.Parse(dataReader["freelancerID"].ToString());

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace IAProject_FreelancerSystem.BL
+namespace IAProject_FreelancerSystem.Models
 {
     public class User
     {
@@ -17,5 +17,4 @@ namespace IAProject_FreelancerSystem.BL
         public string userPhoto { set; get; }
         public string role { set; get; }
     }
-
 }

@@ -82,7 +82,7 @@ namespace IAProject_FreelancerSystem.Models
         }
 
         //Insert statement
-        public void Insert(BL.Proposals proposal)
+        public void Insert(Models.Proposal proposal)
         {
             string query = "INSERT INTO proposals (" +
                 "jobID, " +
@@ -112,7 +112,7 @@ namespace IAProject_FreelancerSystem.Models
         }
 
         //Update statement
-        public void Update(BL.Proposals proposal)
+        public void Update(Models.Proposal proposal)
         {
             string query = "UPDATE proposals SET " +
                 "jobID=" + proposal.jobID +
@@ -154,12 +154,12 @@ namespace IAProject_FreelancerSystem.Models
         }
 
         //Select statement with UserID
-        public BL.Proposals SelectwithId(string propID)
+        public Models.Proposal SelectwithId(string propID)
         {
             string query = "SELECT * FROM proposals where propID = " + propID;
 
             //Create a Object to store the result
-            BL.Proposals proposal = new BL.Proposals();
+            Models.Proposal proposal = new Models.Proposal();
 
             //Open connection
             if (this.OpenConnection() == true)
@@ -196,12 +196,12 @@ namespace IAProject_FreelancerSystem.Models
         }
         
         //Select statement
-        public List<BL.Proposals> SelectAll()
+        public List<Models.Proposal> SelectAll()
         {
             string query = "SELECT * FROM proposals";
 
             //Create a list to store the result
-            List<BL.Proposals> list = new List<BL.Proposals>();
+            List<Models.Proposal> list = new List<Models.Proposal>();
 
             //Open connection
             if (this.OpenConnection() == true)
@@ -214,7 +214,7 @@ namespace IAProject_FreelancerSystem.Models
                 //Read the data and store them in the list
                 while (dataReader.Read())
                 {
-                    BL.Proposals proposal = new BL.Proposals();
+                    Models.Proposal proposal = new Models.Proposal();
                     proposal.propID = Int32.Parse(dataReader["propID"].ToString());
                     proposal.jobID = Int32.Parse(dataReader["jobID"].ToString());
                     proposal.freelancerID = Int32.Parse(dataReader["freelancerID"].ToString());
