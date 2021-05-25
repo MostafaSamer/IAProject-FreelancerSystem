@@ -1,6 +1,10 @@
 # Build Folders (you can keep bin if you'd like, to store dlls and pdbs)
 [Bb]in/
 [Oo]bj/
+.vs/
+IAProject-FreelancerSystem/bin/
+IAProject-FreelancerSystem/obj/
+
 
 # mstest test results
 TestResults
