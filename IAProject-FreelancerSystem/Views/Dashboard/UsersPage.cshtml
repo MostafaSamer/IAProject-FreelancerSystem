@@ -1,0 +1,96 @@
+﻿@{
+    ViewBag.Title = "Index";
+    var Users = ViewData["Users"] as List<IAProject_FreelancerSystem.Models.User>;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title = "PostsPage";</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Profile", "Profile", "Dashboard")</li>
+                    <li>@Html.ActionLink("Users’ page", "UsersPage", "Dashboard")</li>
+                    <li>@Html.ActionLink("Posts page", "PostsPage", "Dashboard")</li>
+                    <li>@Html.ActionLink("Posts Requests", "PostsRequests", "Dashboard")</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        <h2>Users' Page</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>User Name</th>
+                    <th>Email</th>
+                    <th>Phone Num</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Users.Count(); i++)
+                {
+                    <tr>
+                        <th>
+                            @Users[i].fName @Users[i].lName
+                        </th>
+                        <th>
+                            @Users[i].email
+                        </th>
+                        <th>
+                            @Users[i].phoneNum
+                        </th>
+                        <th>
+                            <form action="/Dashboard/DeleteUser" method="post">
+                                <input style="display: none" type="text" name="userID" value="@Users[i].userID" />
+                                <input type="submit" value="Delete" />
+                            </form>
+                        </th>
+                    </tr>
+                    <div>
+                    </div>
+                }
+
+            </tbody>
+        </table>
+        <hr />
+        <form action="/Dashboard/AddUser" method="post">
+            <h2>Add New User</h2>
+            <h3>Image:</h3>
+            <input type="text" name="userPhoto" />
+            <h3>First Name: <input type="text" name="fName" /></h3>
+            <h3>Last Name: <input type="text" name="lName" /></h3>
+            <h3>User Name: <input type="text" name="userName" /></h3>
+            <h3>Email: <input type="email" name="email" /></h3>
+            <h3>Phone Number: <input type="text" name="phoneNum" /></h3>
+            <h3>Password: <input type="password" name="userPassword" /></h3>
+            <select name="role">
+                <option value="client">Client</option>
+                <option value="freelancer">Freelancer</option>
+            </select>
+            <input type="submit" value="Add User" />
+        </form>
+
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+</body>
+</html>

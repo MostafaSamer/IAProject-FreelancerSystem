@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "Index";
+    var user = ViewData["User"] as IAProject_FreelancerSystem.Models.User;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title = "PostsPage";</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Profile", "Profile", "Dashboard")</li>
+                    <li>@Html.ActionLink("Users’ page", "UsersPage", "Dashboard")</li>
+                    <li>@Html.ActionLink("Posts page", "PostsPage", "Dashboard")</li>
+                    <li>@Html.ActionLink("Posts Requests", "PostsRequests", "Dashboard")</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        <h2>Profile</h2>
+        <h3>Image: @user.userPhoto</h3>
+        <h3>Name: @user.fName  @user.lName</h3>
+        <h3>User Name: @user.userName</h3>
+        <h3>Email: @user.email</h3>
+        <h3>Phone Number: @user.phoneNum</h3>
+        <hr />
+        <form action="/Dashboard/UpdateAdmin" method="post">
+            <h2>Update Data</h2>
+            <h3>Image: @user.userPhoto</h3>
+            <input style="display: none" type="text" name="userID" value="@user.userID" />
+            <input style="display: none" type="text" name="role" value="admin" />
+            <h3>First Name: <input type="text" name="fName" value="@user.fName" /></h3>
+            <h3>Last Name: <input type="text" name="lName" value="@user.lName" /></h3>
+            <h3>User Name: <input type="text" name="userName" value="@user.userName" /></h3>
+            <h3>Email: <input type="email" name="email" value="@user.email" /></h3>
+            <h3>Phone Number: <input type="text" name="phoneNum" value="@user.phoneNum" /></h3>
+            <h3>Password: <input type="password" name="userPassword" value="@user.userPassword" /></h3>
+            <input type="submit" value="Update Data" />
+        </form>
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+</body>
+</html>

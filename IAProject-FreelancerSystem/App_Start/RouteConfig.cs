@@ -18,6 +18,13 @@ namespace IAProject_FreelancerSystem
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+            routes.MapRoute(
+                name: "Dashboard",
+                url: "Dashboard/{action}",
+                defaults: new { controller = "Dashboard", action = "Profile" }
+            );
+
         }
     }
 }

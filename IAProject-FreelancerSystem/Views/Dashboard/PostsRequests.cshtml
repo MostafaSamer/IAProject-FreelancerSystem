@@ -1,0 +1,111 @@
+﻿@{
+    ViewBag.Title = "Index";
+    var Jobs = ViewData["Jobs"] as List<IAProject_FreelancerSystem.Models.Job>;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title = "PostsPage";</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Profile", "Profile", "Dashboard")</li>
+                    <li>@Html.ActionLink("Users’ page", "UsersPage", "Dashboard")</li>
+                    <li>@Html.ActionLink("Posts page", "PostsPage", "Dashboard")</li>
+                    <li>@Html.ActionLink("Posts Requests", "PostsRequests", "Dashboard")</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        <h2>PostsRequests</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Client</th>
+                    <th>Budget</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>jobStatus</th>
+                    <th>Rate</th>
+                    <th>propCount</th>
+                    <th>Date</th>
+                    <th>Accept</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Jobs.Count(); i++)
+                {
+                <tr>
+                    <th>
+                        @Jobs[i].jobTitle
+                    </th>
+                    <th>
+                        @Jobs[i].clientID
+                    </th>
+                    <th>
+                        @Jobs[i].jobBudget
+                    </th>
+                    <th>
+                        @Jobs[i].jobType
+                    </th>
+                    <th>
+                        @Jobs[i].jobDescription
+                    </th>
+                    <th>
+                        @Jobs[i].jobStatus
+                    </th>
+                    <th>
+                        @Jobs[i].jobAVGRate
+                    </th>
+                    <th>
+                        @Jobs[i].propCount
+                    </th>
+                    <th>
+                        @Jobs[i].creationDate
+                    </th>
+                    <th>
+                        <form action="/Dashboard/UpdateJobType" method="post">
+                            <input style="display: none" type="text" name="jobID" value="@Jobs[i].jobID" />
+                            <input style="display: none" type="text" name="type" value="Accepted" />
+                            <input type="submit" value="Accept" />
+                        </form>
+                    </th>
+                    <th>
+                        <form action="/Dashboard/UpdateJobType" method="post">
+                            <input style="display: none" type="text" name="jobID" value="@Jobs[i].jobID" />
+                            <input style="display: none" type="text" name="type" value="Blocked" />
+                            <input type="submit" value="Block" />
+                        </form>
+                    </th>
+                </tr>
+                    <div>
+                    </div>
+                }
+
+            </tbody>
+        </table>
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+</body>
+</html>
