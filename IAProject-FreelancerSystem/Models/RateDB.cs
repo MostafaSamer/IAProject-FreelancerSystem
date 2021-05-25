@@ -88,9 +88,9 @@ namespace IAProject_FreelancerSystem.Models
                 "jobID, " +
                 "freelancerID, " +
                 "rate) VALUES(" +
-                rate.jobID +
-                rate.freelancerID +
-                rate.rate +
+                "\"" + rate.jobID + "\"" + ", " +
+                "\"" + rate.freelancerID + "\"" + ", " +
+                "\"" + rate.rate + "\"" +
                 ")";
 
             //open connection
@@ -111,9 +111,9 @@ namespace IAProject_FreelancerSystem.Models
         public void Update(Models.Rate rate)
         {
             string query = "UPDATE rates SET " +
-                "jobID=" + rate.jobID +
-                "userName=" + rate.freelancerID +
-                "rate=" + rate.rate +
+                "jobID=" + "\"" + rate.jobID + "\"" +
+                "userName=" + "\"" + rate.freelancerID + "\"" +
+                "rate=" + "\"" + rate.rate + "\"" +
                 "WHERE rateID =" + rate.rateID;
 
             //Open connection
@@ -137,7 +137,7 @@ namespace IAProject_FreelancerSystem.Models
         //Delete statement
         public void Delete(string rateID)
         {
-            string query = "DELETE FROM rates WHERE rateID=" + rateID;
+            string query = "DELETE FROM rates WHERE rateID=" + "\"" + rateID + "\"";
 
             if (this.OpenConnection() == true)
             {
@@ -150,7 +150,7 @@ namespace IAProject_FreelancerSystem.Models
         //Select statement with UserID
         public Models.Rate SelectwithId(string rateID)
         {
-            string query = "SELECT * FROM rates where rateID  = " + rateID;
+            string query = "SELECT * FROM rates where rateID  = " + "\"" + rateID + "\"";
 
             //Create a Object to store the result
             Models.Rate rate = new Models.Rate();

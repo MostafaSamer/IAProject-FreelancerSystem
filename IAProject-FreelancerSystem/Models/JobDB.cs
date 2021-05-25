@@ -96,17 +96,17 @@ namespace IAProject_FreelancerSystem.Models
                 "jobStatus, " +
                 "jobAdminAcceptance, " +
                 "propCount) VALUES(" +
-                job.freelancerID +
-                job.clientID +
-                job.jobTitle +
-                job.jobBudget +
-                job.jobType +
-                job.creationDate +
-                job.jobDescription +
-                job.jobAVGRate +
-                job.jobStatus +
-                job.jobAdminAcceptance +
-                job.propCount +
+                "\"" + job.freelancerID + "\"" + ", " +
+                "\"" + job.clientID + "\"" + ", " +
+                "\"" + job.jobTitle + "\"" + ", " +
+                "\"" + job.jobBudget + "\"" + ", " +
+                "\"" + job.jobType + "\"" + ", " +
+                "\"" + job.creationDate + "\"" + ", " +
+                "\"" + job.jobDescription + "\"" + ", " +
+                "\"" + job.jobAVGRate + "\"" + ", " +
+                "\"" + job.jobStatus + "\"" + ", " +
+                "\"" + job.jobAdminAcceptance + "\"" + ", " +
+                "\"" + job.propCount + "\"" +
                 ")";
 
             //open connection
@@ -127,18 +127,17 @@ namespace IAProject_FreelancerSystem.Models
         public void Update(Models.Job job)
         {
             string query = "UPDATE jobs SET " +
-                "freelancerID=" + job.freelancerID +
-                "clientID=" + job.clientID +
-                "jobTitle=" + job.jobTitle +
-                "jobBudget=" + job.jobBudget +
-                "jobType=" + job.jobType +
-                "creationDate=" + job.creationDate +
-                "jobDescription=" + job.jobDescription +
-                "jobAVGRate=" + job.jobAVGRate +
-                "jobStatus=" + job.jobStatus +
-                "jobAdminAcceptance=" + job.jobAdminAcceptance +
-                "propCount=" + job.propCount +
-                "WHERE jobID=" + job.jobID;
+                "freelancerID=" + "\"" + job.freelancerID + "\", " + 
+                "clientID=" + "\"" + job.clientID + "\", " +
+                "jobTitle=" + "\"" + job.jobTitle + "\", " +
+                "jobBudget=" + "\"" + job.jobBudget + "\", " +
+                "jobType=" + "\"" + job.jobType + "\", " +
+                "jobDescription=" + "\"" + job.jobDescription + "\", " +
+                "jobAVGRate=" + "\"" + job.jobAVGRate + "\", " +
+                "jobStatus=" + "\"" + job.jobStatus + "\", " +
+                "jobAdminAcceptance=" + "\"" + job.jobAdminAcceptance + "\", " +
+                "propCount=" + "\"" + job.propCount + "\"" +
+                "WHERE jobID=" + "\"" + job.jobID + "\"";
 
             //Open connection
             if (this.OpenConnection() == true)
@@ -161,7 +160,7 @@ namespace IAProject_FreelancerSystem.Models
         //Delete statement
         public void Delete(string jobID)
         {
-            string query = "DELETE FROM jobs WHERE jobID=" + jobID;
+            string query = "DELETE FROM jobs WHERE jobID=" + "\"" + jobID + "\"";
 
             if (this.OpenConnection() == true)
             {
@@ -174,7 +173,7 @@ namespace IAProject_FreelancerSystem.Models
         //Select statement with UserID
         public Models.Job SelectwithId(string jobID)
         {
-            string query = "SELECT * FROM jobs where jobID = " + jobID;
+            string query = "SELECT * FROM jobs where jobID = " + "\"" + jobID + "\"";
 
             //Create a Object to store the result
             Models.Job job = new Models.Job();

@@ -57,6 +57,12 @@
                         <th>
                             @Users[i].phoneNum
                         </th>
+                        <th>
+                            <form action="/Dashboard/DeleteUser" method="post">
+                                <input style="display: none" type="text" name="userID" value="@Users[i].userID" />
+                                <input type="submit" value="Delete" />
+                            </form>
+                        </th>
                     </tr>
                     <div>
                     </div>
@@ -65,6 +71,23 @@
             </tbody>
         </table>
         <hr />
+        <form action="/Dashboard/AddUser" method="post">
+            <h2>Add New User</h2>
+            <h3>Image:</h3>
+            <input type="text" name="userPhoto" />
+            <h3>First Name: <input type="text" name="fName" /></h3>
+            <h3>Last Name: <input type="text" name="lName" /></h3>
+            <h3>User Name: <input type="text" name="userName" /></h3>
+            <h3>Email: <input type="email" name="email" /></h3>
+            <h3>Phone Number: <input type="text" name="phoneNum" /></h3>
+            <h3>Password: <input type="password" name="userPassword" /></h3>
+            <select name="role">
+                <option value="client">Client</option>
+                <option value="freelancer">Freelancer</option>
+            </select>
+            <input type="submit" value="Add User" />
+        </form>
+
         <footer>
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>

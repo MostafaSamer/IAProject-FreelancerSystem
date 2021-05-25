@@ -90,11 +90,11 @@ namespace IAProject_FreelancerSystem.Models
                 "propDescription, " +
                 "propPrice, " +
                 "clientAcceptance) VALUES(" +
-                proposal.jobID +
-                proposal.freelancerID +
-                proposal.propDescription +
-                proposal.propPrice +
-                proposal.clientAcceptance +
+                "\"" + proposal.jobID + "\"" + ", " +
+                "\"" + proposal.freelancerID + "\"" + ", " +
+                "\"" + proposal.propDescription + "\"" + ", " +
+                "\"" + proposal.propPrice + "\"" + ", " +
+                "\"" + proposal.clientAcceptance + "\"" +
                 ")";
 
             //open connection
@@ -115,11 +115,11 @@ namespace IAProject_FreelancerSystem.Models
         public void Update(Models.Proposal proposal)
         {
             string query = "UPDATE proposals SET " +
-                "jobID=" + proposal.jobID +
-                "freelancerID=" + proposal.freelancerID +
-                "propDescription=" + proposal.propDescription +
-                "propPrice=" + proposal.propPrice +
-                "clientAcceptance=" + proposal.clientAcceptance +
+                "jobID=" + "\"" + proposal.jobID + "\"" + ", " +
+                "freelancerID=" + "\"" + proposal.freelancerID + "\"" + ", " +
+                "propDescription=" + "\"" + proposal.propDescription + "\"" + ", " +
+                "propPrice=" + "\"" + proposal.propPrice + "\"" + ", " +
+                "clientAcceptance=" + "\"" + proposal.clientAcceptance + "\"" +
                 "WHERE propID=" + proposal.propID;
 
             //Open connection
@@ -143,7 +143,7 @@ namespace IAProject_FreelancerSystem.Models
         //Delete statement
         public void Delete(string propID)
         {
-            string query = "DELETE FROM proposals WHERE propID=" + propID;
+            string query = "DELETE FROM proposals WHERE propID=" + "\"" + propID + "\"";
 
             if (this.OpenConnection() == true)
             {
@@ -156,7 +156,8 @@ namespace IAProject_FreelancerSystem.Models
         //Select statement with UserID
         public Models.Proposal SelectwithId(string propID)
         {
-            string query = "SELECT * FROM proposals where propID = " + propID;
+            string query = "SELECT * FROM proposals where propID = " + "\"" + propID + "\"";
+
 
             //Create a Object to store the result
             Models.Proposal proposal = new Models.Proposal();

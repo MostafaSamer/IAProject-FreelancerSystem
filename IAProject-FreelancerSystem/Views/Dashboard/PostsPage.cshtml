@@ -1,6 +1,7 @@
 ﻿@{
     ViewBag.Title = "Index";
     var Jobs = ViewData["Jobs"] as List<IAProject_FreelancerSystem.Models.Job>;
+    var Job = ViewData["Job"] as IAProject_FreelancerSystem.Models.Job;
 }
 
 <!DOCTYPE html>
@@ -47,7 +48,8 @@
                     <th>Rate</th>
                     <th>propCount</th>
                     <th>Date</th>
-                    <th>Accept</th>
+                    <th>Delete</th>
+                    <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -82,16 +84,35 @@
                             @Jobs[i].creationDate
                         </th>
                         <th>
-                            @Jobs[i].jobAdminAcceptance
+                            <form action="/Dashboard/PostsPage" method="post">
+                                <input style="display: none" type="text" name="jobID" value="@Jobs[i].jobID" />
+                                <input type="submit" value="Edit" />
+                            </form>
+                        </th>
+                        <th>
+                            <form action="/Dashboard/DeleteJob" method="post">
+                                <input style="display: none" type="text" name="jobID" value="@Jobs[i].jobID" />
+                                <input type="submit" value="Delete" />
+                            </form>
                         </th>
                     </tr>
-                    <div>
-                    </div>
                 }
 
             </tbody>
         </table>
         <hr />
+        @if (Job != null)
+        {
+    <form action="/Dashboard/UpdateJob" method="post">
+        <h2>Update Data</h2>
+        <input style="display: none" type="text" name="jobID" value="@Job.jobID" />
+        <h3>Title: <input type="text" name="jobTitle" value="@Job.jobTitle" /></h3>
+        <h3>Budget: <input type="text" name="jobBudget" value="@Job.jobBudget" /></h3>
+        <h3>Type: <input type="text" name="jobType" value="@Job.jobType" /></h3>
+        <h3>Description: <input type="text" name="jobDescription" value="@Job.jobDescription" /></h3>
+        <input type="submit" value="Update" />
+    </form>
+        }
         <footer>
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
