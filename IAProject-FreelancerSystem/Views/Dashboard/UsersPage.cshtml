@@ -1,6 +1,7 @@
 ﻿@{
     ViewBag.Title = "Index";
     var Users = ViewData["Users"] as List<IAProject_FreelancerSystem.Models.User>;
+    var user = ViewData["User"] as IAProject_FreelancerSystem.Models.User;
 }
 
 <!DOCTYPE html>
@@ -57,6 +58,17 @@
                         <th>
                             @Users[i].phoneNum
                         </th>
+                        <th>
+                            <form action="/Dashboard/UsersPage" method="post">
+                                <input style="display: none" type="text" name="userID" value="@Users[i].userID" />
+                                <input type="submit" value="Edit" />
+                            </form>
+                            
+                            <form action="/Dashboard/DeleteUser" method="post">
+                                <input style="display: none" type="text" name="userID" value="@Users[i].userID" />
+                                <input type="submit" value="Delete" />
+                            </form>
+                        </th>
                     </tr>
                     <div>
                     </div>
@@ -65,6 +77,58 @@
             </tbody>
         </table>
         <hr />
+        @if (user == null)
+        {
+            <form action="/Dashboard/AddUser" method="post">
+                <h2>Add New User</h2>
+                <h3>Image:</h3>
+                <input type="text" name="userPhoto" />
+                <h3>First Name: <input type="text" name="fName" /></h3>
+                <h3>Last Name: <input type="text" name="lName" /></h3>
+                <h3>User Name: <input type="text" name="userName" /></h3>
+                <h3>Email: <input type="email" name="email" /></h3>
+                <h3>Phone Number: <input type="text" name="phoneNum" /></h3>
+                <h3>Password: <input type="password" name="userPassword" /></h3>
+                <select name="role">
+                    <option value="client">Client</option>
+                    <option value="freelancer">Freelancer</option>
+                </select>
+                <input type="submit" value="Add User" />
+            </form>
+        }
+        else
+        {
+
+    <form action="/Dashboard/UpdateUser" method="post">
+        <h2>Update Data</h2>
+        <h3>Image: @user.userPhoto</h3>
+        <input style="display: none" type="text" name="userID" value="@user.userID" />
+        <h3>First Name: <input type="text" name="fName" value="@user.fName" /></h3>
+        <h3>Last Name: <input type="text" name="lName" value="@user.lName" /></h3>
+        <h3>User Name: <input type="text" name="userName" value="@user.userName" /></h3>
+        <h3>Email: <input type="email" name="email" value="@user.email" /></h3>
+        <h3>Phone Number: <input type="text" name="phoneNum" value="@user.phoneNum" /></h3>
+        <h3>Password: <input type="password" name="userPassword" value="@user.userPassword" /></h3>
+        @{
+            if (@user.role == "client")
+            {
+                <select name="role">
+                    <option selected="selected" value="client">Client</option>
+                    <option value="freelancer">Freelancer</option>
+                </select>
+            }
+            else
+            {
+                <select name="role">
+                    <option value="client">Client</option>
+                    <option selected="selected" value="freelancer">Freelancer</option>
+                </select>
+            }
+        }
+        <input type="submit" value="Update Data" />
+    </form>
+        }
+
         <footer>
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>

@@ -93,14 +93,14 @@ namespace IAProject_FreelancerSystem.Models
                 "phoneNum, " +
                 "userPhoto, " +
                 "role) VALUES(" +
-                user.userPassword +
-                user.userName +
-                user.fName +
-                user.lName +
-                user.email +
-                user.phoneNum +
-                user.userPhoto +
-                user.role + 
+                "\"" + user.userPassword + "\"" + ", " +
+                "\"" + user.userName + "\"" + ", " +
+                "\"" + user.fName + "\"" + ", " +
+                "\"" + user.lName + "\"" + ", " +
+                "\"" + user.email + "\"" + ", " +
+                "\"" + user.phoneNum + "\"" + ", " +
+                "\"" + user.userPhoto + "\"" + ", " +
+                "\"" + user.role + "\"" + 
                 ")";
 
             //open connection
@@ -121,14 +121,14 @@ namespace IAProject_FreelancerSystem.Models
         public void Update(Models.User user)
         {
             string query = "UPDATE users SET " +
-                "userPassword=" + user.userPassword +
-                "userName=" + user.userName +
-                "fName=" + user.fName +
-                "lName=" + user.lName +
-                "email=" + user.email +
-                "phoneNum=" + user.phoneNum +
-                "userPhoto=" + user.userPhoto +
-                "role=" + user.role +
+                "userPassword=" + "\"" + user.userPassword + "\"" + ", " +
+                "userName=" + "\"" + user.userName + "\"" + ", " +
+                "fName=" + "\"" + user.fName + "\"" + ", " +
+                "lName=" + "\"" + user.lName + "\"" + ", " +
+                "email=" + "\"" + user.email + "\"" + ", " +
+                "phoneNum=" + "\"" + user.phoneNum + "\"" + ", " +
+                "userPhoto=" + "\"" + user.userPhoto + "\"" + ", " +
+                "role=" + "\"" + user.role + "\"" +
                 "WHERE userID=" + user.userID;
 
             //Open connection
@@ -152,7 +152,7 @@ namespace IAProject_FreelancerSystem.Models
         //Delete statement
         public void Delete(string userID)
         {
-            string query = "DELETE FROM users WHERE userID=" + userID;
+            string query = "DELETE FROM users WHERE userID=" + "\"" + userID + "\"";
 
             if (this.OpenConnection() == true)
             {
@@ -165,7 +165,7 @@ namespace IAProject_FreelancerSystem.Models
         //Select statement with UserID
         public Models.User SelectwithId(string userID)
         {
-            string query = "SELECT * FROM users where userID = " + userID;
+            string query = "SELECT * FROM users where userID = " + "\"" + userID + "\"" ;
 
             //Create a Object to store the result
             Models.User user = new Models.User();
