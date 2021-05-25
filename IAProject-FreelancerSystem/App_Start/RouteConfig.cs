@@ -25,6 +25,12 @@ namespace IAProject_FreelancerSystem
                 defaults: new { controller = "Dashboard", action = "Profile" }
             );
 
+            routes.MapRoute(
+                name: "Wall",
+                url: "Wall/{action}",
+                defaults: new { controller = "Dashboard", action = "Index" }
+            );
+
         }
     }
 }
