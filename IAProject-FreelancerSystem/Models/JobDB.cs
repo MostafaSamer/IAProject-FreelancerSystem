@@ -96,17 +96,17 @@ namespace IAProject_FreelancerSystem.Models
                 "jobStatus, " +
                 "jobAdminAcceptance, " +
                 "propCount) VALUES(" +
-                job.freelancerID +
-                job.clientID +
-                job.jobTitle +
-                job.jobBudget +
-                job.jobType +
-                job.creationDate +
-                job.jobDescription +
-                job.jobAVGRate +
-                job.jobStatus +
-                job.jobAdminAcceptance +
-                job.propCount +
+                "\"" + job.freelancerID + "\"" + ", " +
+                "\"" + job.clientID + "\"" + ", " +
+                "\"" + job.jobTitle + "\"" + ", " +
+                "\"" + job.jobBudget + "\"" + ", " +
+                "\"" + job.jobType + "\"" + ", " +
+                "\"" + job.creationDate + "\"" + ", " +
+                "\"" + job.jobDescription + "\"" + ", " +
+                "\"" + job.jobAVGRate + "\"" + ", " +
+                "\"" + job.jobStatus + "\"" + ", " +
+                "\"" + job.jobAdminAcceptance + "\"" + ", " +
+                "\"" + job.propCount + "\"" +
                 ")";
 
             //open connection
@@ -160,7 +160,7 @@ namespace IAProject_FreelancerSystem.Models
         //Delete statement
         public void Delete(string jobID)
         {
-            string query = "DELETE FROM jobs WHERE jobID=" + jobID;
+            string query = "DELETE FROM jobs WHERE jobID=" + "\"" + jobID + "\"";
 
             if (this.OpenConnection() == true)
             {

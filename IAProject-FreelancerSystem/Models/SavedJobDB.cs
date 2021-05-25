@@ -90,11 +90,11 @@ namespace IAProject_FreelancerSystem.Models
                 "jobTitle, " +
                 "jobDate, " +
                 "clientName) VALUES(" +
-                savedJobs.freelancerID +
-                savedJobs.jobID +
-                savedJobs.jobTitle +
-                savedJobs.jobDate +
-                savedJobs.clientName +
+                "\"" + savedJobs.freelancerID + "\"" + ", " +
+                "\"" + savedJobs.jobID + "\"" + ", " +
+                "\"" + savedJobs.jobTitle + "\"" + ", " +
+                "\"" + savedJobs.jobDate + "\"" + ", " +
+                "\"" + savedJobs.clientName + "\"" +
                 ")";
 
             //open connection
@@ -115,12 +115,12 @@ namespace IAProject_FreelancerSystem.Models
         public void Update(Models.SavedJob savedJobs)
         {
             string query = "UPDATE savedjobs SET " +
-                "freelancerID=" + savedJobs.freelancerID +
-                "jobID=" + savedJobs.jobID +
-                "jobTitle=" + savedJobs.jobTitle +
-                "jobDate=" + savedJobs.jobDate +
-                "clientName=" + savedJobs.clientName +
-                "WHERE savedID=" + savedJobs.savedID;
+                "freelancerID=" + "\"" + savedJobs.freelancerID + "\"" + ", " +
+                "jobID=" + "\"" + savedJobs.jobID + "\"" + ", " +
+                "jobTitle=" + "\"" + savedJobs.jobTitle + "\"" + ", " +
+                "jobDate=" + "\"" + savedJobs.jobDate + "\"" + ", " +
+                "clientName=" + "\"" + savedJobs.clientName + "\"" + ", " +
+                "WHERE savedID=" + "\"" + savedJobs.savedID;
 
             //Open connection
             if (this.OpenConnection() == true)
@@ -143,7 +143,7 @@ namespace IAProject_FreelancerSystem.Models
         //Delete statement
         public void Delete(string savedID)
         {
-            string query = "DELETE FROM savedjobs WHERE savedID=" + savedID;
+            string query = "DELETE FROM savedjobs WHERE savedID=" + "\"" + savedID + "\"";
 
             if (this.OpenConnection() == true)
             {
@@ -156,7 +156,7 @@ namespace IAProject_FreelancerSystem.Models
         //Select statement with UserID
         public Models.SavedJob SelectwithId(string savedID)
         {
-            string query = "SELECT * FROM savedjobs where savedID = " + savedID;
+            string query = "SELECT * FROM savedjobs where savedID = " + "\"" + savedID + "\"";
 
             //Create a Object to store the result
             Models.SavedJob savedJobs = new Models.SavedJob();
