@@ -127,18 +127,17 @@ namespace IAProject_FreelancerSystem.Models
         public void Update(Models.Job job)
         {
             string query = "UPDATE jobs SET " +
-                "freelancerID=" + job.freelancerID +
-                "clientID=" + job.clientID +
-                "jobTitle=" + job.jobTitle +
-                "jobBudget=" + job.jobBudget +
-                "jobType=" + job.jobType +
-                "creationDate=" + job.creationDate +
-                "jobDescription=" + job.jobDescription +
-                "jobAVGRate=" + job.jobAVGRate +
-                "jobStatus=" + job.jobStatus +
-                "jobAdminAcceptance=" + job.jobAdminAcceptance +
-                "propCount=" + job.propCount +
-                "WHERE jobID=" + job.jobID;
+                "freelancerID=" + "\"" + job.freelancerID + "\", " + 
+                "clientID=" + "\"" + job.clientID + "\", " +
+                "jobTitle=" + "\"" + job.jobTitle + "\", " +
+                "jobBudget=" + "\"" + job.jobBudget + "\", " +
+                "jobType=" + "\"" + job.jobType + "\", " +
+                "jobDescription=" + "\"" + job.jobDescription + "\", " +
+                "jobAVGRate=" + "\"" + job.jobAVGRate + "\", " +
+                "jobStatus=" + "\"" + job.jobStatus + "\", " +
+                "jobAdminAcceptance=" + "\"" + job.jobAdminAcceptance + "\", " +
+                "propCount=" + "\"" + job.propCount + "\"" +
+                "WHERE jobID=" + "\"" + job.jobID + "\"";
 
             //Open connection
             if (this.OpenConnection() == true)
@@ -174,7 +173,7 @@ namespace IAProject_FreelancerSystem.Models
         //Select statement with UserID
         public Models.Job SelectwithId(string jobID)
         {
-            string query = "SELECT * FROM jobs where jobID = " + jobID;
+            string query = "SELECT * FROM jobs where jobID = " + "\"" + jobID + "\"";
 
             //Create a Object to store the result
             Models.Job job = new Models.Job();

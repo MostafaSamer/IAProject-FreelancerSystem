@@ -10,52 +10,12 @@ namespace IAProject_FreelancerSystem.Controllers
 {
     public class DashboardController : Controller
     {
-        // GET: Dashboard
+        // PROFILE
         public ActionResult Profile()
         {
             User user = new User();
             user = new UserDB().SelectwithId("1");
             ViewData["User"] = user;
-            return View();
-        }
-
-        public ActionResult UsersPage(string userID)
-        {
-            // All User
-            List<User> list = new List<User>();
-            list = new UserDB().SelectAll();
-            list = list.FindAll(u => u.userID != 1 );
-            // User to Edit if exist
-            User user = new User();
-            if(userID != null)
-            {
-                user = new UserDB().SelectwithId(userID);
-            }
-            else
-            {
-                user = null;
-            }
-            ViewData["Users"] = list;
-            ViewData["User"] = user;
-
-            return View();
-        }
-
-        public ActionResult PostsPage()
-        {
-            List<Job> list = new List<Job>();
-            list = new JobDB().SelectAll();
-            list = list.FindAll(u => u.jobAdminAcceptance == "Accepted" && u.jobStatus == "Waitting");
-            ViewData["Jobs"] = list;
-            return View();
-        }
-
-        public ActionResult PostsRequests()
-        {
-            List<Job> list = new List<Job>();
-            list = new JobDB().SelectAll();
-            list = list.FindAll(u => u.jobAdminAcceptance == "Waitting");
-            ViewData["Jobs"] = list;
             return View();
         }
 
@@ -74,13 +34,21 @@ namespace IAProject_FreelancerSystem.Controllers
             userToAdd.userPhoto = "admin.png";
             userToAdd.role = formCollection["role"];
             new UserDB().Update(userToAdd);
-            User user = new User();
-            user = new UserDB().SelectwithId("1");
-            // Return to View Profile
-            ViewData["User"] = user;
             return View("Profile");
         }
 
+        // USERS PAGE
+        public ActionResult UsersPage(string userID)
+        {
+            // All User
+            List<User> list = new List<User>();
+            list = new UserDB().SelectAll();
+            list = list.FindAll(u => u.userID != 1 );
+            ViewData["Users"] = list;
+            return View();
+        }
+
+        [HttpPost]
         public ViewResult AddUser(FormCollection formCollection)
         {
             var test = formCollection["role"];
@@ -101,35 +69,10 @@ namespace IAProject_FreelancerSystem.Controllers
             list = list.FindAll(u => u.userID != 1);
             // Return to View Profile
             ViewData["Users"] = list;
-            ViewData["User"] = null;
             return View("UsersPage");
         }
 
-        public ViewResult UpdateUser(FormCollection formCollection)
-        {
-            // Action with Data
-            User userToAdd = new User();
-            userToAdd.userID = Int32.Parse(formCollection["userID"]);
-            userToAdd.fName = formCollection["fName"];
-            userToAdd.lName = formCollection["lName"];
-            userToAdd.userName = formCollection["userName"];
-            userToAdd.email = formCollection["email"];
-            userToAdd.phoneNum = formCollection["phoneNum"];
-            userToAdd.userPassword = formCollection["userPassword"];
-            userToAdd.userPhoto = "admin.png";
-            userToAdd.role = formCollection["role"];
-            new UserDB().Update(userToAdd);
-            // All User
-            List<User> list = new List<User>();
-            list = new UserDB().SelectAll();
-            list = list.FindAll(u => u.userID != 1);
-            // Return to View Profile
-            ViewData["Users"] = list;
-            ViewData["User"] = null;
-
-            return View("UsersPage");
-        }
-
+        [HttpPost]
         public ViewResult DeleteUser(FormCollection formCollection)
         {
             // Delete User
@@ -140,8 +83,93 @@ namespace IAProject_FreelancerSystem.Controllers
             list = list.FindAll(u => u.userID != 1);
             // Return to View Profile
             ViewData["Users"] = list;
-            ViewData["User"] = null;
             return View("UsersPage");
+        }
+
+        // POST PAGE
+        public ActionResult PostsPage(string jobID)
+        {
+            Job job = new Job();
+            if (jobID != null)
+            {
+                job = new JobDB().SelectwithId(jobID);
+            }
+            else
+            {
+                job = null;
+            }
+            List<Job> list = new List<Job>();
+            list = new JobDB().SelectAll();
+            list = list.FindAll(u => u.jobAdminAcceptance == "Accepted" && u.jobStatus == "Waitting");
+            ViewData["Jobs"] = list;
+            ViewData["Job"] = job;
+            return View();
+        }
+
+        [HttpPost]
+        public ViewResult UpdateJob(FormCollection formCollection)
+        {
+            // Get Job
+            Job jobToEdit = new Job();
+            jobToEdit = new JobDB().SelectwithId(formCollection["jobID"]);
+            jobToEdit.jobTitle = formCollection["jobTitle"];
+            jobToEdit.jobBudget = Int32.Parse(formCollection["jobBudget"]);
+            jobToEdit.jobType = formCollection["jobType"];
+            jobToEdit.jobDescription = formCollection["jobDescription"];
+
+            // Update Data
+            new JobDB().Update(jobToEdit);
+
+            // View Data
+            List<Job> list = new List<Job>();
+            list = new JobDB().SelectAll();
+            list = list.FindAll(u => u.jobAdminAcceptance == "Accepted" && u.jobStatus == "Waitting");
+            ViewData["Jobs"] = list;
+            ViewData["Job"] = null;
+            return View("PostsPage");
+        }
+        
+        public ViewResult DeleteJob(FormCollection formCollection)
+        {
+            // Get Job
+            Job job = new Job();
+            new JobDB().Delete(formCollection["jobID"]);
+
+            // View Data
+            List<Job> list = new List<Job>();
+            list = new JobDB().SelectAll();
+            list = list.FindAll(u => u.jobAdminAcceptance == "Accepted" && u.jobStatus == "Waitting");
+            ViewData["Jobs"] = list;
+            ViewData["Job"] = null;
+            return View("PostsPage");
+        }
+
+        // POST REQ
+        public ActionResult PostsRequests()
+        {
+            List<Job> list = new List<Job>();
+            list = new JobDB().SelectAll();
+            list = list.FindAll(u => u.jobAdminAcceptance == "Waitting");
+            ViewData["Jobs"] = list;
+            return View();
+        }
+
+        [HttpPost]
+        public ViewResult UpdateJobType(FormCollection formCollection)
+        {
+            // Get the Job
+            Job job = new Job();
+            job = new JobDB().SelectwithId(formCollection["jobID"]);
+            // Update Role
+            job.jobAdminAcceptance = formCollection["type"];
+            // Set the Job
+            new JobDB().Update(job);
+            // Get Jobs
+            List<Job> list = new List<Job>();
+            list = new JobDB().SelectAll();
+            list = list.FindAll(u => u.jobAdminAcceptance == "Waitting");
+            ViewData["Jobs"] = list;
+            return View("PostsRequests");
         }
 
     }

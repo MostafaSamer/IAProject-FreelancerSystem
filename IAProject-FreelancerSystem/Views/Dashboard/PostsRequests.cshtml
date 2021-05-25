@@ -53,38 +53,49 @@
             <tbody>
                 @for (int i = 0; i < Jobs.Count(); i++)
                 {
-                    <tr>
-                        <th>
-                            @Jobs[i].jobTitle
-                        </th>
-                        <th>
-                            @Jobs[i].clientID
-                        </th>
-                        <th>
-                            @Jobs[i].jobBudget
-                        </th>
-                        <th>
-                            @Jobs[i].jobType
-                        </th>
-                        <th>
-                            @Jobs[i].jobDescription
-                        </th>
-                        <th>
-                            @Jobs[i].jobStatus
-                        </th>
-                        <th>
-                            @Jobs[i].jobAVGRate
-                        </th>
-                        <th>
-                            @Jobs[i].propCount
-                        </th>
-                        <th>
-                            @Jobs[i].creationDate
-                        </th>
-                        <th>
-                            @Jobs[i].jobAdminAcceptance
-                        </th>
-                    </tr>
+                <tr>
+                    <th>
+                        @Jobs[i].jobTitle
+                    </th>
+                    <th>
+                        @Jobs[i].clientID
+                    </th>
+                    <th>
+                        @Jobs[i].jobBudget
+                    </th>
+                    <th>
+                        @Jobs[i].jobType
+                    </th>
+                    <th>
+                        @Jobs[i].jobDescription
+                    </th>
+                    <th>
+                        @Jobs[i].jobStatus
+                    </th>
+                    <th>
+                        @Jobs[i].jobAVGRate
+                    </th>
+                    <th>
+                        @Jobs[i].propCount
+                    </th>
+                    <th>
+                        @Jobs[i].creationDate
+                    </th>
+                    <th>
+                        <form action="/Dashboard/UpdateJobType" method="post">
+                            <input style="display: none" type="text" name="jobID" value="@Jobs[i].jobID" />
+                            <input style="display: none" type="text" name="type" value="Accepted" />
+                            <input type="submit" value="Accept" />
+                        </form>
+                    </th>
+                    <th>
+                        <form action="/Dashboard/UpdateJobType" method="post">
+                            <input style="display: none" type="text" name="jobID" value="@Jobs[i].jobID" />
+                            <input style="display: none" type="text" name="type" value="Blocked" />
+                            <input type="submit" value="Block" />
+                        </form>
+                    </th>
+                </tr>
                     <div>
                     </div>
                 }
