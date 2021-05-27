@@ -86,15 +86,9 @@ namespace IAProject_FreelancerSystem.Models
         {
             string query = "INSERT INTO savedjobs (" +
                 "freelancerID, " +
-                "jobID, " +
-                "jobTitle, " +
-                "jobDate, " +
-                "clientName) VALUES(" +
+                "jobID) VALUES(" +
                 "\"" + savedJobs.freelancerID + "\"" + ", " +
-                "\"" + savedJobs.jobID + "\"" + ", " +
-                "\"" + savedJobs.jobTitle + "\"" + ", " +
-                "\"" + savedJobs.jobDate + "\"" + ", " +
-                "\"" + savedJobs.clientName + "\"" +
+                "\"" + savedJobs.jobID + "\"" +
                 ")";
 
             //open connection
@@ -117,9 +111,6 @@ namespace IAProject_FreelancerSystem.Models
             string query = "UPDATE savedjobs SET " +
                 "freelancerID=" + "\"" + savedJobs.freelancerID + "\"" + ", " +
                 "jobID=" + "\"" + savedJobs.jobID + "\"" + ", " +
-                "jobTitle=" + "\"" + savedJobs.jobTitle + "\"" + ", " +
-                "jobDate=" + "\"" + savedJobs.jobDate + "\"" + ", " +
-                "clientName=" + "\"" + savedJobs.clientName + "\"" + ", " +
                 "WHERE savedID=" + "\"" + savedJobs.savedID;
 
             //Open connection
@@ -175,9 +166,6 @@ namespace IAProject_FreelancerSystem.Models
                     savedJobs.savedID = Int32.Parse(dataReader["savedID"].ToString());
                     savedJobs.freelancerID = Int32.Parse(dataReader["freelancerID"].ToString());
                     savedJobs.jobID = Int32.Parse(dataReader["jobID"].ToString());
-                    savedJobs.jobTitle = dataReader["jobTitle"].ToString();
-                    savedJobs.jobDate = dataReader["jobDate"].ToString();
-                    savedJobs.clientName = dataReader["clientName"].ToString();
                 }
 
                 //close Data Reader
@@ -218,9 +206,6 @@ namespace IAProject_FreelancerSystem.Models
                     savedJobs.savedID = Int32.Parse(dataReader["savedID"].ToString());
                     savedJobs.freelancerID = Int32.Parse(dataReader["freelancerID"].ToString());
                     savedJobs.jobID = Int32.Parse(dataReader["jobID"].ToString());
-                    savedJobs.jobTitle = dataReader["jobTitle"].ToString();
-                    savedJobs.jobDate = dataReader["jobDate"].ToString();
-                    savedJobs.clientName = dataReader["clientName"].ToString();
                     list.Add(savedJobs);
                 }
 

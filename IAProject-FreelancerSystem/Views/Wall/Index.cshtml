@@ -1,7 +1,131 @@
 ﻿
 @{
     ViewBag.Title = "Index";
+    var User = Session["User"] as IAProject_FreelancerSystem.Models.User;
+
+    var savedJobs = ViewData["savedJobs"] as List<IAProject_FreelancerSystem.Models.SavedJob>;
+
+    var rates = ViewData["ratedJobs"] as List<IAProject_FreelancerSystem.Models.Rate>;
+
+    var jobs = ViewData["Jobs"] as List<IAProject_FreelancerSystem.Models.Job>;
+
 }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title = "PostsPage";</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Wall", "Index", "Wall")</li>
+                    @if (User != null)
+                    {
+                        <li>@Html.ActionLink("Saved", "SavedJobs", "Wall")</li>
+}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        <h2>Index</h2>
+        @{
 
-<h2>Index</h2>
+            if (User == null)
+            {
+                <form action="/Wall/LoginForm" method="post">
+                    <h2>Login Form </h2>
+                    <h3>User Name: <input type="text" name="userName" /></h3>
+                    <h3>Password: <input type="password" name="Password" /></h3>
+                    <input type="submit" value="Login" />
+                </form>
 
+                <form action="/Wall/RegisterForm" method="post">
+                    <h2>Register</h2>
+                    <h3>Image: <input type="text" name="userPhoto" /></h3>
+                    <h3>First Name: <input type="text" name="fName" /></h3>
+                    <h3>Last Name: <input type="text" name="lName" /></h3>
+                    <h3>User Name: <input type="text" name="userName" /></h3>
+                    <h3>Email: <input type="email" name="email" /></h3>
+                    <h3>Phone Number: <input type="text" name="phoneNum" /></h3>
+                    <h3>Password: <input type="password" name="userPassword" /></h3>
+                    <select name="role">
+                        <option value="client">Client</option>
+                        <option value="freelancer">Freelancer</option>
+                    </select>
+                    <input type="submit" value="Register" />
+                </form>
+            }
+            else
+            {
+                <!-- Logout Form -->
+                <form action="/Wall/LogoutForm" method="post">
+                    <input type="submit" value="Logout" />
+                </form>
+            }
+        }
+
+        <!-- Jobs Card -->
+        @for (int i = 0; i < jobs.Count(); i++)
+        {
+    <div>
+        <h3>@jobs[i].jobTitle</h3>
+        <h3>@jobs[i].jobBudget</h3>
+        <h3>@jobs[i].jobType</h3>
+        <h3>@jobs[i].jobDescription</h3>
+        <h3>@jobs[i].jobAVGRate</h3>
+        <h3>@jobs[i].propCount</h3>
+
+        <!-- If Login as Freelancer -->
+        @if (User != null)
+        {
+
+            <form action="/Wall/SaveJob" method="post">
+                <input style="display: none" type="text" name="userID" value="@User.userID" />
+                <input style="display: none" type="text" name="jobID" value="@jobs[i].jobID" />
+                <input style="display: none" type="text" name="jobTitle" value="@jobs[i].jobTitle" />
+                @if (savedJobs.FindAll(s => s.jobID == jobs[i].jobID).Count() == 0)
+                {
+                    <input type="submit" value="Save" />
+                }
+            </form><div>Give Proposel</div>
+            if (rates.FindAll(r => r.jobID == jobs[i].jobID).Count() != 0)
+            {
+                <h5>@rates.FindAll(r => r.jobID == jobs[i].jobID)[0].rate / 5</h5>
+            }
+            else
+            {
+                <form action="/Wall/GiveRate" method="post">
+                    <input style="display: none" type="text" name="userID" value="@User.userID" />
+                    <input style="display: none" type="text" name="jobID" value="@jobs[i].jobID" />
+                    <input type="number" max="5" name="rateToAdd" />
+                    <input type="submit" value="Rate" />
+                </form>
+            }
+        }
+
+        <hr />
+
+    </div>
+        }
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+</body>
+</html>
