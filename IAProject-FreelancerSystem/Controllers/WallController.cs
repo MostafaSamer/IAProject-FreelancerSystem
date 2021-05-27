@@ -16,6 +16,13 @@ namespace IAProject_FreelancerSystem.Controllers
             if(Session["User"] != null)
             {
                 var user = Session["User"] as IAProject_FreelancerSystem.Models.User;
+
+                // ProposeledJob
+                List<Proposal> proposelJob = new List<Proposal>();
+                proposelJob = new ProposalsDB().SelectAll();
+                proposelJob = proposelJob.FindAll(p => p.freelancerID == user.userID);
+                ViewData["proposelJob"] = proposelJob;
+
                 // SavedJob
                 List<SavedJob> savedJobs = new List<SavedJob>();
                 savedJobs = new SavedJobDB().SelectAll();
@@ -56,21 +63,28 @@ namespace IAProject_FreelancerSystem.Controllers
             else
             {
                 Session["User"] = list[0];
-                ViewData["Role"] = list[0].role;
+
+                var user = Session["User"] as IAProject_FreelancerSystem.Models.User;
+
+                // ProposeledJob
+                List<Proposal> proposelJob = new List<Proposal>();
+                proposelJob = new ProposalsDB().SelectAll();
+                proposelJob = proposelJob.FindAll(p => p.freelancerID == user.userID);
+                ViewData["proposelJob"] = proposelJob;
+
+                // SavedJob
+                List<SavedJob> savedJobs = new List<SavedJob>();
+                savedJobs = new SavedJobDB().SelectAll();
+                savedJobs = savedJobs.FindAll(s => s.freelancerID == user.userID);
+                ViewData["savedJobs"] = savedJobs;
+
+                // RatedJob
+                List<Rate> ratedJobs = new List<Rate>();
+                ratedJobs = new RateDB().SelectAll();
+                ratedJobs = ratedJobs.FindAll(r => r.freelancerID == user.userID);
+                ViewData["ratedJobs"] = ratedJobs;
+
             }
-
-            // SavedJob
-            var user = Session["User"] as IAProject_FreelancerSystem.Models.User;
-            List<SavedJob> savedJobs = new List<SavedJob>();
-            savedJobs = new SavedJobDB().SelectAll();
-            savedJobs = savedJobs.FindAll(s => s.freelancerID == user.userID);
-            ViewData["savedJobs"] = savedJobs;
-
-            // RatedJob
-            List<Rate> ratedJobs = new List<Rate>();
-            ratedJobs = new RateDB().SelectAll();
-            ratedJobs = ratedJobs.FindAll(r => r.freelancerID == user.userID);
-            ViewData["ratedJobs"] = ratedJobs;
 
             // Jobs
             List<Job> jobs = new List<Job>();
@@ -133,8 +147,15 @@ namespace IAProject_FreelancerSystem.Controllers
             saveJob.freelancerID = Int32.Parse(UserID);
             new SavedJobDB().Insert(saveJob);
 
-            // SavedJob
             var user = Session["User"] as IAProject_FreelancerSystem.Models.User;
+
+            // ProposeledJob
+            List<Proposal> proposelJob = new List<Proposal>();
+            proposelJob = new ProposalsDB().SelectAll();
+            proposelJob = proposelJob.FindAll(p => p.freelancerID == user.userID);
+            ViewData["proposelJob"] = proposelJob;
+
+            // SavedJob
             List<SavedJob> savedJobs = new List<SavedJob>();
             savedJobs = new SavedJobDB().SelectAll();
             savedJobs = savedJobs.FindAll(s => s.freelancerID == user.userID);
@@ -170,8 +191,63 @@ namespace IAProject_FreelancerSystem.Controllers
             rate.rate = Int32.Parse(rateToAdd);
             new RateDB().Insert(rate);
 
-            // SavedJob
             var user = Session["User"] as IAProject_FreelancerSystem.Models.User;
+
+            // ProposeledJob
+            List<Proposal> proposelJob = new List<Proposal>();
+            proposelJob = new ProposalsDB().SelectAll();
+            proposelJob = proposelJob.FindAll(p => p.freelancerID == user.userID);
+            ViewData["proposelJob"] = proposelJob;
+
+            // SavedJob
+            List<SavedJob> savedJobs = new List<SavedJob>();
+            savedJobs = new SavedJobDB().SelectAll();
+            savedJobs = savedJobs.FindAll(s => s.freelancerID == user.userID);
+            ViewData["savedJobs"] = savedJobs;
+
+            // RatedJob
+            List<Rate> ratedJobs = new List<Rate>();
+            ratedJobs = new RateDB().SelectAll();
+            ratedJobs = ratedJobs.FindAll(r => r.freelancerID == user.userID);
+            ViewData["ratedJobs"] = ratedJobs;
+
+            // Jobs
+            List<Job> jobs = new List<Job>();
+            jobs = new JobDB().SelectAll();
+            jobs = jobs.FindAll(j => j.jobAdminAcceptance == "Accepted" && j.jobStatus == "Waitting");
+
+            ViewData["Jobs"] = jobs;
+
+            return View("Index");
+        }
+
+        public ViewResult GivePropsel(FormCollection formCollection)
+        {
+            // Get the data
+            var userID = formCollection["userID"];
+            var jobID = formCollection["jobID"];
+            var propPrice = formCollection["propPrice"];
+            var propDescription = formCollection["propDescription"];
+            var clientAcceptance = "Waitting";
+
+            Proposal proposal = new Proposal();
+            proposal.freelancerID = Int32.Parse(userID);
+            proposal.jobID = Int32.Parse(jobID);
+            proposal.propPrice = Int32.Parse(propPrice);
+            proposal.propDescription = propDescription;
+            proposal.clientAcceptance = clientAcceptance;
+
+            new ProposalsDB().Insert(proposal);
+
+            var user = Session["User"] as IAProject_FreelancerSystem.Models.User;
+
+            // ProposeledJob
+            List<Proposal> proposelJob = new List<Proposal>();
+            proposelJob = new ProposalsDB().SelectAll();
+            proposelJob = proposelJob.FindAll(p => p.freelancerID == user.userID);
+            ViewData["proposelJob"] = proposelJob;
+
+            // SavedJob
             List<SavedJob> savedJobs = new List<SavedJob>();
             savedJobs = new SavedJobDB().SelectAll();
             savedJobs = savedJobs.FindAll(s => s.freelancerID == user.userID);
