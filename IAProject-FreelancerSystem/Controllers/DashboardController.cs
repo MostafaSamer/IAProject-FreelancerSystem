@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -24,6 +25,24 @@ namespace IAProject_FreelancerSystem.Controllers
         {
             // Action with Data
             User userToAdd = new User();
+
+            // Upload File
+            if (Request.Files.Count > 0)
+            {
+                HttpPostedFileBase postedFile = Request.Files["postedFile"];
+                string path = Server.MapPath("~/Uploads/");
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                postedFile.SaveAs(path + DateTime.Now.ToString("yyyyMMdd_hhmmss") + ".jpg");
+
+                var userPhoto = "https://localhost:44388/Uploads/" + DateTime.Now.ToString("yyyyMMdd_hhmmss") + ".jpg";
+                userToAdd.userPhoto = userPhoto;
+
+            }
+
             userToAdd.userID = Int32.Parse(formCollection["userID"]);
             userToAdd.fName = formCollection["fName"];
             userToAdd.lName = formCollection["lName"];
@@ -31,9 +50,13 @@ namespace IAProject_FreelancerSystem.Controllers
             userToAdd.email = formCollection["email"];
             userToAdd.phoneNum = formCollection["phoneNum"];
             userToAdd.userPassword = formCollection["userPassword"];
-            userToAdd.userPhoto = "admin.png";
             userToAdd.role = formCollection["role"];
             new UserDB().Update(userToAdd);
+
+            User user = new User();
+            user = new UserDB().SelectwithId("1");
+            ViewData["User"] = user;
+
             return View("Profile");
         }
 
@@ -52,15 +75,30 @@ namespace IAProject_FreelancerSystem.Controllers
         public ViewResult AddUser(FormCollection formCollection)
         {
             var test = formCollection["role"];
+
             // Action with Data
             User userToAdd = new User();
+            // Upload File
+            if (Request.Files.Count > 0)
+            {
+                HttpPostedFileBase postedFile = Request.Files["postedFile"];
+                string path = Server.MapPath("~/Uploads/");
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                postedFile.SaveAs(path + DateTime.Now.ToString("yyyyMMdd_hhmmss") + ".jpg");
+
+                userToAdd.userPhoto = "https://localhost:44388/Uploads/" + DateTime.Now.ToString("yyyyMMdd_hhmmss") + ".jpg";
+
+            }
             userToAdd.fName = formCollection["fName"];
             userToAdd.lName = formCollection["lName"];
             userToAdd.userName = formCollection["userName"];
             userToAdd.email = formCollection["email"];
             userToAdd.phoneNum = formCollection["phoneNum"];
             userToAdd.userPassword = formCollection["userPassword"];
-            userToAdd.userPhoto = "admin.png";
             userToAdd.role = formCollection["role"];
             new UserDB().Insert(userToAdd);
             // All User

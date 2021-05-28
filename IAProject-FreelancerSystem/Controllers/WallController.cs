@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -114,7 +115,21 @@ namespace IAProject_FreelancerSystem.Controllers
         public ViewResult RegisterForm(FormCollection formCollectiion)
         {
             User user = new User();
-            user.userPhoto = formCollectiion["userPhoto"];
+            // Upload File
+            if (Request.Files.Count > 0)
+            {
+                HttpPostedFileBase postedFile = Request.Files["postedFile"];
+                string path = Server.MapPath("~/Uploads/");
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                postedFile.SaveAs(path + DateTime.Now.ToString("yyyyMMdd_hhmmss") + ".jpg");
+
+                user.userPhoto = "https://localhost:44388/Uploads/" + DateTime.Now.ToString("yyyyMMdd_hhmmss") + ".jpg";
+
+            }
             user.fName = formCollectiion["fName"];
             user.lName = formCollectiion["lName"];
             user.userName = formCollectiion["userName"];

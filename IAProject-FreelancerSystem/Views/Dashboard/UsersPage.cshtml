@@ -38,6 +38,7 @@
         <table>
             <thead>
                 <tr>
+                    <th>Photo</th>
                     <th>Name</th>
                     <th>User Name</th>
                     <th>Email</th>
@@ -48,6 +49,9 @@
                 @for (int i = 0; i < Users.Count(); i++)
                 {
                     <tr>
+                        <th>
+                            <img src="@Users[i].userPhoto" width="20" height="20" />
+                        </th>
                         <th>
                             @Users[i].fName @Users[i].lName
                         </th>
@@ -71,22 +75,21 @@
             </tbody>
         </table>
         <hr />
-        <form action="/Dashboard/AddUser" method="post">
-            <h2>Add New User</h2>
-            <h3>Image: <input type="text" name="userPhoto" /></h3>
+        @using (Html.BeginForm("AddUser", "Dashboard", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {<h2>Add New User</h2>
             <h3>First Name: <input type="text" name="fName" /></h3>
             <h3>Last Name: <input type="text" name="lName" /></h3>
             <h3>User Name: <input type="text" name="userName" /></h3>
             <h3>Email: <input type="email" name="email" /></h3>
             <h3>Phone Number: <input type="text" name="phoneNum" /></h3>
             <h3>Password: <input type="password" name="userPassword" /></h3>
+            <input type="file" name="postedFile" />
             <select name="role">
                 <option value="client">Client</option>
                 <option value="freelancer">Freelancer</option>
             </select>
             <input type="submit" value="Add User" />
-        </form>
-
+        }
         <footer>
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>

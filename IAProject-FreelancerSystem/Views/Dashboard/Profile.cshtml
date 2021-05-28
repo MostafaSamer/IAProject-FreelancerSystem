@@ -35,15 +35,26 @@
     </div>
     <div class="container body-content">
         <h2>Profile</h2>
-        <h3>Image: @user.userPhoto</h3>
+        <img src="@user.userPhoto" width="200" height="200" />
         <h3>Name: @user.fName  @user.lName</h3>
         <h3>User Name: @user.userName</h3>
         <h3>Email: @user.email</h3>
         <h3>Phone Number: @user.phoneNum</h3>
         <hr />
-        <form action="/Dashboard/UpdateAdmin" method="post">
+        <!--<form action="/Dashboard/UpdateAdmin" method="post">
+    <h2>Update Data</h2>
+    <input style="display: none" type="text" name="userID" value="@user.userID" />
+    <input style="display: none" type="text" name="role" value="admin" />
+    <h3>First Name: <input type="text" name="fName" value="@user.fName" /></h3>
+    <h3>Last Name: <input type="text" name="lName" value="@user.lName" /></h3>
+    <h3>User Name: <input type="text" name="userName" value="@user.userName" /></h3>
+    <h3>Email: <input type="email" name="email" value="@user.email" /></h3>
+    <h3>Phone Number: <input type="text" name="phoneNum" value="@user.phoneNum" /></h3>
+    <h3>Password: <input type="password" name="userPassword" value="@user.userPassword" /></h3>-->
+
+        @using (Html.BeginForm("UpdateAdmin", "Dashboard", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
             <h2>Update Data</h2>
-            <h3>Image: @user.userPhoto</h3>
             <input style="display: none" type="text" name="userID" value="@user.userID" />
             <input style="display: none" type="text" name="role" value="admin" />
             <h3>First Name: <input type="text" name="fName" value="@user.fName" /></h3>
@@ -52,8 +63,13 @@
             <h3>Email: <input type="email" name="email" value="@user.email" /></h3>
             <h3>Phone Number: <input type="text" name="phoneNum" value="@user.phoneNum" /></h3>
             <h3>Password: <input type="password" name="userPassword" value="@user.userPassword" /></h3>
+            <input type="file" name="postedFile" />
             <input type="submit" value="Update Data" />
-        </form>
+        }
+
+
+        <!--
+    </form> -->
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
