@@ -18,23 +18,34 @@ namespace IAProject_FreelancerSystem.Controllers
             {
                 var user = Session["User"] as IAProject_FreelancerSystem.Models.User;
 
-                // ProposeledJob
-                List<Proposal> proposelJob = new List<Proposal>();
-                proposelJob = new ProposalsDB().SelectAll();
-                proposelJob = proposelJob.FindAll(p => p.freelancerID == user.userID);
-                ViewData["proposelJob"] = proposelJob;
+                if (user.role == "Admin")
+                {
+                    return RedirectToAction("Profile", "Dashboard");
+                }
+                else if (user.role == "Client")
+                {
+                    return RedirectToAction("");
+                }
+                else
+                {
+                    // ProposeledJob
+                    List<Proposal> proposelJob = new List<Proposal>();
+                    proposelJob = new ProposalsDB().SelectAll();
+                    proposelJob = proposelJob.FindAll(p => p.freelancerID == user.userID);
+                    ViewData["proposelJob"] = proposelJob;
 
-                // SavedJob
-                List<SavedJob> savedJobs = new List<SavedJob>();
-                savedJobs = new SavedJobDB().SelectAll();
-                savedJobs = savedJobs.FindAll(s => s.freelancerID == user.userID);
-                ViewData["savedJobs"] = savedJobs;
+                    // SavedJob
+                    List<SavedJob> savedJobs = new List<SavedJob>();
+                    savedJobs = new SavedJobDB().SelectAll();
+                    savedJobs = savedJobs.FindAll(s => s.freelancerID == user.userID);
+                    ViewData["savedJobs"] = savedJobs;
 
-                // RatedJob
-                List<Rate> ratedJobs = new List<Rate>();
-                ratedJobs = new RateDB().SelectAll();
-                ratedJobs = ratedJobs.FindAll(r => r.freelancerID == user.userID);
-                ViewData["ratedJobs"] = ratedJobs;
+                    // RatedJob
+                    List<Rate> ratedJobs = new List<Rate>();
+                    ratedJobs = new RateDB().SelectAll();
+                    ratedJobs = ratedJobs.FindAll(r => r.freelancerID == user.userID);
+                    ViewData["ratedJobs"] = ratedJobs;
+                }
 
 
             }
@@ -50,7 +61,7 @@ namespace IAProject_FreelancerSystem.Controllers
         }
 
         [HttpPost]
-        public ViewResult LoginForm(FormCollection formCollection)
+        public ActionResult LoginForm(FormCollection formCollection)
         {
             var userName = formCollection["userName"];
             var password = formCollection["password"];
@@ -94,10 +105,10 @@ namespace IAProject_FreelancerSystem.Controllers
 
             ViewData["Jobs"] = jobs;
 
-            return View("Index");
+            return RedirectToAction("Index");
         }
         
-        public ViewResult LogoutForm(FormCollection formCollectiion)
+        public ActionResult LogoutForm(FormCollection formCollectiion)
         {
             // User
             Session["User"] = null;
@@ -109,10 +120,10 @@ namespace IAProject_FreelancerSystem.Controllers
 
             ViewData["Jobs"] = jobs;
 
-            return View("Index");
+            return RedirectToAction("Index");
         }
         
-        public ViewResult RegisterForm(FormCollection formCollectiion)
+        public ActionResult RegisterForm(FormCollection formCollectiion)
         {
             User user = new User();
             // Upload File
@@ -150,9 +161,9 @@ namespace IAProject_FreelancerSystem.Controllers
 
             ViewData["Jobs"] = jobs;
 
-            return View("Index");
+            return RedirectToAction("Index");
         }
-        public ViewResult SaveJob(FormCollection formCollectiion)
+        public ActionResult SaveJob(FormCollection formCollectiion)
         {
             // Save the Job
             var UserID = formCollectiion["userID"];
@@ -189,15 +200,24 @@ namespace IAProject_FreelancerSystem.Controllers
 
             ViewData["Jobs"] = jobs;
 
-            return View("Index");
+            return RedirectToAction("Index");
         }
 
-        public ViewResult GiveRate(FormCollection formCollection)
+        public ActionResult GiveRate(FormCollection formCollection)
         {
             // Get Data
             var userID = formCollection["userID"];
             var jobID = formCollection["jobID"];
             var rateToAdd = formCollection["rateToAdd"];
+
+            // Update Rate Ang in this Jobs
+            List<Rate> listOldRate = new RateDB().SelectAll();
+            var numUser = listOldRate.FindAll(r => r.jobID == Int32.Parse(jobID)).Count();
+            var oldJob = new JobDB().SelectwithId(jobID);
+            var oldAvgRate = oldJob.jobAVGRate;
+            var newRate = ((oldAvgRate*numUser)+Int32.Parse(rateToAdd))/(numUser+1);
+            oldJob.jobAVGRate = newRate;
+            new JobDB().Update(oldJob);
 
             // Save the Rate
             Rate rate = new Rate();
@@ -205,6 +225,7 @@ namespace IAProject_FreelancerSystem.Controllers
             rate.jobID = Int32.Parse(jobID);
             rate.rate = Int32.Parse(rateToAdd);
             new RateDB().Insert(rate);
+            
 
             var user = Session["User"] as IAProject_FreelancerSystem.Models.User;
 
@@ -233,10 +254,10 @@ namespace IAProject_FreelancerSystem.Controllers
 
             ViewData["Jobs"] = jobs;
 
-            return View("Index");
+            return RedirectToAction("Index");
         }
 
-        public ViewResult GivePropsel(FormCollection formCollection)
+        public ActionResult GivePropsel(FormCollection formCollection)
         {
             // Get the data
             var userID = formCollection["userID"];
@@ -281,7 +302,7 @@ namespace IAProject_FreelancerSystem.Controllers
 
             ViewData["Jobs"] = jobs;
 
-            return View("Index");
+            return RedirectToAction("Index");
         }
 
         public ActionResult SavedJobs() {
@@ -295,7 +316,7 @@ namespace IAProject_FreelancerSystem.Controllers
 
                 ViewData["Jobs"] = jobs;
 
-                return View("Index");
+                return RedirectToAction("Index");
             }
 
             var user = Session["User"] as IAProject_FreelancerSystem.Models.User;

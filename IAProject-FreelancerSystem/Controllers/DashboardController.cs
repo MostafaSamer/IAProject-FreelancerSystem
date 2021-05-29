@@ -14,8 +14,28 @@ namespace IAProject_FreelancerSystem.Controllers
         // PROFILE
         public ActionResult Profile()
         {
+
             User user = new User();
-            user = new UserDB().SelectwithId("1");
+            user = Session["User"] as IAProject_FreelancerSystem.Models.User;
+
+            // Users
+            if (Session["User"] != null)
+            {
+                if (user.role == "Client")
+                {
+                    return RedirectToAction("");
+                }
+                else if (user.role == "Freelancer")
+                {
+                    return RedirectToAction("Index", "Wall");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Wall");
+            }
+
             ViewData["User"] = user;
             return View();
         }
@@ -208,6 +228,12 @@ namespace IAProject_FreelancerSystem.Controllers
             list = list.FindAll(u => u.jobAdminAcceptance == "Waitting");
             ViewData["Jobs"] = list;
             return View("PostsRequests");
+        }
+
+        public ActionResult Logout()
+        {
+            Session["User"] = null;
+            return RedirectToAction("Profile", "Dashboard");
         }
 
     }

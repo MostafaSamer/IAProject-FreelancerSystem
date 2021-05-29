@@ -197,7 +197,7 @@ namespace IAProject_FreelancerSystem.Models
                     job.jobType = dataReader["jobType"].ToString();
                     job.creationDate = dataReader["creationDate"].ToString();
                     job.jobDescription = dataReader["jobDescription"].ToString();
-                    job.jobAVGRate = Int32.Parse(dataReader["jobAVGRate"].ToString());
+                    job.jobAVGRate = float.Parse(dataReader["jobAVGRate"].ToString());
                     job.jobStatus = dataReader["jobStatus"].ToString();
                     job.jobAdminAcceptance = dataReader["jobAdminAcceptance"].ToString();
                     job.propCount = Int32.Parse(dataReader["propCount"].ToString());
@@ -246,7 +246,7 @@ namespace IAProject_FreelancerSystem.Models
                     job.jobType = dataReader["jobType"].ToString();
                     job.creationDate = dataReader["creationDate"].ToString();
                     job.jobDescription = dataReader["jobDescription"].ToString();
-                    job.jobAVGRate = Int32.Parse(dataReader["jobAVGRate"].ToString());
+                    job.jobAVGRate = float.Parse(dataReader["jobAVGRate"].ToString());
                     job.jobStatus = dataReader["jobStatus"].ToString();
                     job.jobAdminAcceptance = dataReader["jobAdminAcceptance"].ToString();
                     job.propCount = Int32.Parse(dataReader["propCount"].ToString());
