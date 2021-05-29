@@ -30,6 +30,11 @@ namespace IAProject_FreelancerSystem
                 url: "Wall/{action}",
                 defaults: new { controller = "Dashboard", action = "Index" }
             );
+            routes.MapRoute(
+                 name: "FactoryLayout",
+                 url: "FactoryLayout/{action}",
+                 defaults: new { controller = "FactoryLayout", action = "Profile" }
+            );
 
         }
     }
