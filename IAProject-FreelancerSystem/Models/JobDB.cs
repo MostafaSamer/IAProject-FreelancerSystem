@@ -32,7 +32,7 @@ namespace IAProject_FreelancerSystem.Models
             password = "";
             string connectionString;
             connectionString = "SERVER=" + server + ";" + "DATABASE=" +
-            database + ";" + "UID=" + uid + ";" + "PASSWORD=" + password + ";";
+            database + ";" + "UID=" + uid + ";" + "PASSWORD=" + password + ";"+ "convert zero datetime = True";
 
             connection = new MySqlConnection(connectionString);
         }
@@ -90,7 +90,6 @@ namespace IAProject_FreelancerSystem.Models
                 "jobTitle, " +
                 "jobBudget, " +
                 "jobType, " +
-                "creationDate, " +
                 "jobDescription, " +
                 "jobAVGRate, " +
                 "jobStatus, " +
@@ -101,7 +100,6 @@ namespace IAProject_FreelancerSystem.Models
                 "\"" + job.jobTitle + "\"" + ", " +
                 "\"" + job.jobBudget + "\"" + ", " +
                 "\"" + job.jobType + "\"" + ", " +
-                "\"" + job.creationDate + "\"" + ", " +
                 "\"" + job.jobDescription + "\"" + ", " +
                 "\"" + job.jobAVGRate + "\"" + ", " +
                 "\"" + job.jobStatus + "\"" + ", " +

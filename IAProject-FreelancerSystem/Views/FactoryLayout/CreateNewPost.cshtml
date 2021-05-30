@@ -1,0 +1,55 @@
+﻿@model IAProject_FreelancerSystem.Models.Job
+
+@{
+    ViewBag.Title = "createnewpost";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title = "PostsPage";</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("FreeLance", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Profile", "Profile", "FactoryLayout")</li>
+                    <li>@Html.ActionLink("Create New Post", "CreateNewPost", "FactoryLayout")</li>
+                    <li>@Html.ActionLink("My Posts", "MyPosts", "FactoryLayout")</li>
+                    <li>@Html.ActionLink("Recived Proposals", "ReceivedProposals", "FactoryLayout")</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <form action="/FactoryLayout/createnewpost" method="post">
+        <h2>Add New User</h2>
+        <h3>Image:</h3>
+        <input type="text" name="userPhoto" />
+        <h3>Client ID: @Html.TextBoxFor(p => p.clientID)</h3>
+        <h3>Job Title: @Html.TextBoxFor(p => p.jobTitle)</h3>
+        <h3>
+            Job Type:   @Html.DropDownListFor(p => p.jobType, new List<SelectListItem>
+       { new SelectListItem{Text="hourely", Value="Hourely"},
+         new SelectListItem{Text="Fixed", Value="Fixed"}}, "Please select")
+        </h3>
+        <h3>Job Budget: @Html.TextBoxFor(p => p.jobBudget)</h3>
+        @*<h3>Creation Date:@Html.TextBoxFor(p => p.creationDate)</h3>*@
+        <h3>Job Description: @Html.TextBoxFor(p => p.jobDescription)</h3>
+
+        <input type="submit" value="POST" />
+    </form>
+</body>
+</html>
