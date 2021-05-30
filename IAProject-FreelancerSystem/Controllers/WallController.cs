@@ -305,6 +305,71 @@ namespace IAProject_FreelancerSystem.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult Search(FormCollection formCollection)
+        {
+            // Users
+            if (Session["User"] != null)
+            {
+                var user = Session["User"] as IAProject_FreelancerSystem.Models.User;
+
+                if (user.role == "Admin")
+                {
+                    return RedirectToAction("Profile", "Dashboard");
+                }
+                else if (user.role == "Client")
+                {
+                    return RedirectToAction("");
+                }
+                else
+                {
+                    // ProposeledJob
+                    List<Proposal> proposelJob = new List<Proposal>();
+                    proposelJob = new ProposalsDB().SelectAll();
+                    proposelJob = proposelJob.FindAll(p => p.freelancerID == user.userID);
+                    ViewData["proposelJob"] = proposelJob;
+
+                    // SavedJob
+                    List<SavedJob> savedJobs = new List<SavedJob>();
+                    savedJobs = new SavedJobDB().SelectAll();
+                    savedJobs = savedJobs.FindAll(s => s.freelancerID == user.userID);
+                    ViewData["savedJobs"] = savedJobs;
+
+                    // RatedJob
+                    List<Rate> ratedJobs = new List<Rate>();
+                    ratedJobs = new RateDB().SelectAll();
+                    ratedJobs = ratedJobs.FindAll(r => r.freelancerID == user.userID);
+                    ViewData["ratedJobs"] = ratedJobs;
+                }
+
+
+            }
+            // Jobs
+            List<Job> jobs = new List<Job>();
+            jobs = new JobDB().SelectAll();
+
+            jobs = jobs.FindAll(j => j.jobAdminAcceptance == "Accepted" && j.jobStatus == "Waitting");
+            // Filter with Search
+            var dataToSearch = formCollection["dataToSearch"];
+            if(formCollection["type"] == "title")
+            {
+                // Search with Job Title
+                jobs = jobs.FindAll(j => j.jobTitle == dataToSearch);
+            }
+            else
+            {
+                // Search with client name
+                jobs = jobs.FindAll(j =>
+                {
+                    User user = new UserDB().SelectwithId(j.clientID.ToString());
+                    return (user.fName == dataToSearch || user.lName == dataToSearch || user.userName == dataToSearch);
+                }
+                );
+            }
+            ViewData["Jobs"] = jobs;
+
+            return View("Index");
+        }
+
         public ActionResult SavedJobs() {
 
             if (Session["User"] == null)

@@ -77,16 +77,30 @@
                     <input type="submit" value="Register" />
                 }
                 <!-- End of Register Form -->
+            }
+            else
+            {
+                <!-- Start of Logout Form -->
+                <form action="/Wall/LogoutForm" method="post">
+                    <input type="submit" value="Logout" />
+                </form>
+                <!-- End of Logout Form -->
+            }
         }
-        else
-        {
-            <!-- Start of Logout Form -->
-            <form action="/Wall/LogoutForm" method="post">
-                <input type="submit" value="Logout" />
-            </form>
-            <!-- End of Logout Form -->
-        }
-        }
+
+        <form action="/Wall/Search" method="post">
+            <h2>Search with Title</h2>
+            <input style="display: none" type="text" name="type" value="title" />
+            <h3><input type="text" name="dataToSearch" /></h3>
+            <input type="submit" value="Search" />
+        </form>
+
+        <form action="/Wall/Search" method="post">
+            <h2>Search with Client</h2>
+            <input style="display: none" type="text" name="type" value="client" />
+            <h3><input type="text" name="dataToSearch" /></h3>
+            <input type="submit" value="Search" />
+        </form>
 
         <!-- Start of Jobs Card -->
         @for (int i = 0; i < jobs.Count(); i++)

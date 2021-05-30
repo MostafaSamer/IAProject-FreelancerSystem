@@ -90,7 +90,6 @@ namespace IAProject_FreelancerSystem.Models
                 "jobTitle, " +
                 "jobBudget, " +
                 "jobType, " +
-                "creationDate, " +
                 "jobDescription, " +
                 "jobAVGRate, " +
                 "jobStatus, " +
@@ -101,7 +100,6 @@ namespace IAProject_FreelancerSystem.Models
                 "\"" + job.jobTitle + "\"" + ", " +
                 "\"" + job.jobBudget + "\"" + ", " +
                 "\"" + job.jobType + "\"" + ", " +
-                "\"" + job.creationDate + "\"" + ", " +
                 "\"" + job.jobDescription + "\"" + ", " +
                 "\"" + job.jobAVGRate + "\"" + ", " +
                 "\"" + job.jobStatus + "\"" + ", " +
