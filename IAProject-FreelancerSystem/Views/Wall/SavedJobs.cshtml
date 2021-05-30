@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewBag.Title = "SavedJobs";
+    var savedJobs = ViewData["SavedJobs"] as List<IAProject_FreelancerSystem.Models.Job>;
+}
+
+<h2>SavedJobs</h2>
+
+@for(int i = 0; i<savedJobs.Count(); i++)
+{ 
+    <h1>@savedJobs[i].jobTitle</h1>
+}
+
