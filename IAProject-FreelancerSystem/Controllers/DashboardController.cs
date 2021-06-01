@@ -21,7 +21,7 @@ namespace IAProject_FreelancerSystem.Controllers
             // Users
             if (Session["User"] != null)
             {
-                if (user.role == "Client")
+                if (user.role == "client")
                 {
                     return RedirectToAction("");
                 }

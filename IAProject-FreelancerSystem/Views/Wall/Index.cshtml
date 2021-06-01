@@ -102,16 +102,25 @@
             <input type="submit" value="Search" />
         </form>
 
+        <form action="/Wall/Search" method="post">
+            <h2>Search with Client</h2>
+            <input style="display: none" type="text" name="type" value="createDate" />
+            <h3><input type="datetime-local" name="from_dataToSearch" /></h3>
+            <h3><input type="datetime-local" name="to_dataToSearch" /></h3>
+            <input type="submit" value="Search" />
+        </form>
+
         <!-- Start of Jobs Card -->
         @for (int i = 0; i < jobs.Count(); i++)
         {
             <div>
-                <h3>@jobs[i].jobTitle</h3>
-                <h3>@jobs[i].jobBudget</h3>
-                <h3>@jobs[i].jobType</h3>
-                <h3>@jobs[i].jobDescription</h3>
-                <h3>@jobs[i].jobAVGRate</h3>
-                <h3>@jobs[i].propCount</h3>
+                <h3>jobTitle: @jobs[i].jobTitle</h3>
+                <h3>jobBudget: @jobs[i].jobBudget</h3>
+                <h3>jobType: @jobs[i].jobType</h3>
+                <h3>jobDescription: @jobs[i].jobDescription</h3>
+                <h3>jobAVGRate: @jobs[i].jobAVGRate</h3>
+                <h3>propCount: @jobs[i].propCount</h3>
+                <h3>creationDate: @jobs[i].creationDate</h3>
 
                 <!-- If Login as Freelancer -->
                 @if (User != null)

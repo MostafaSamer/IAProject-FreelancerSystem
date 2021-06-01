@@ -18,11 +18,11 @@ namespace IAProject_FreelancerSystem.Controllers
             {
                 var user = Session["User"] as IAProject_FreelancerSystem.Models.User;
 
-                if (user.role == "Admin")
+                if (user.role == "admin")
                 {
                     return RedirectToAction("Profile", "Dashboard");
                 }
-                else if (user.role == "Client")
+                else if (user.role == "client")
                 {
                     return RedirectToAction("");
                 }
@@ -312,11 +312,11 @@ namespace IAProject_FreelancerSystem.Controllers
             {
                 var user = Session["User"] as IAProject_FreelancerSystem.Models.User;
 
-                if (user.role == "Admin")
+                if (user.role == "admin")
                 {
                     return RedirectToAction("Profile", "Dashboard");
                 }
-                else if (user.role == "Client")
+                else if (user.role == "client")
                 {
                     return RedirectToAction("");
                 }
@@ -349,14 +349,15 @@ namespace IAProject_FreelancerSystem.Controllers
 
             jobs = jobs.FindAll(j => j.jobAdminAcceptance == "Accepted" && j.jobStatus == "Waitting");
             // Filter with Search
-            var dataToSearch = formCollection["dataToSearch"];
             if(formCollection["type"] == "title")
             {
+                var dataToSearch = formCollection["dataToSearch"];
                 // Search with Job Title
                 jobs = jobs.FindAll(j => j.jobTitle == dataToSearch);
             }
-            else
+            else if(formCollection["type"] == "client")
             {
+                var dataToSearch = formCollection["dataToSearch"];
                 // Search with client name
                 jobs = jobs.FindAll(j =>
                 {
@@ -364,6 +365,28 @@ namespace IAProject_FreelancerSystem.Controllers
                     return (user.fName == dataToSearch || user.lName == dataToSearch || user.userName == dataToSearch);
                 }
                 );
+            }
+            else
+            {
+                var from_dataToSearch = formCollection["from_dataToSearch"];
+                var to_dataToSearch = formCollection["to_dataToSearch"];
+                if(from_dataToSearch != "" && to_dataToSearch == "")
+                {
+                    // Search with only from
+                    jobs = jobs.FindAll(j => DateTime.Parse(j.creationDate) > DateTime.Parse(from_dataToSearch));
+                }
+                else if (from_dataToSearch == "" && to_dataToSearch != "")
+                {
+                    // Search with only from
+                    jobs = jobs.FindAll(j => DateTime.Parse(j.creationDate) < DateTime.Parse(to_dataToSearch));
+                }
+                else if (from_dataToSearch != "" && to_dataToSearch != "")
+                {
+                    // Search with only from
+                    jobs = jobs.FindAll(j => DateTime.Parse(j.creationDate) > DateTime.Parse(from_dataToSearch) && DateTime.Parse(j.creationDate) < DateTime.Parse(to_dataToSearch));
+                }
+
+
             }
             ViewData["Jobs"] = jobs;
 
