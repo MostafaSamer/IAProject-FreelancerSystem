@@ -2,42 +2,67 @@
     ViewBag.Title = "Index";
     var Jobs = ViewData["Jobs"] as List<IAProject_FreelancerSystem.Models.Job>;
     var Job = ViewData["Job"] as IAProject_FreelancerSystem.Models.Job;
+    var Clients = ViewData["Clients"] as List<IAProject_FreelancerSystem.Models.User>;
+
+    var script1 = "https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js";
+    var script2 = "https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js";
+    var script3 = "https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js";
+
 }
 
 <!DOCTYPE html>
 <html>
 <head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+          integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="style.css">
+
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title = "PostsPage";</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    <title>"PostsPage"</title>
+
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Profile", "Profile", "Dashboard")</li>
-                    <li>@Html.ActionLink("Users’ page", "UsersPage", "Dashboard")</li>
-                    <li>@Html.ActionLink("Posts page", "PostsPage", "Dashboard")</li>
-                    <li>@Html.ActionLink("Posts Requests", "PostsRequests", "Dashboard")</li>
-                    <li>@Html.ActionLink("Logout", "Logout", "Dashboard")</li>
+            <a class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Dashboard/Profile">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Dashboard/UsersPage">Users’ page</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/Dashboard/PostsPage">Posts page</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Dashboard/PostsRequests">Posts Requests</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Dashboard/Logout">Logout</a>
+                    </li>
                 </ul>
             </div>
         </div>
-    </div>
-    <div class="container body-content">
+    </nav>
+
+
+    <div class="container body-content mt-5">
         <h2>Posts Page</h2>
-        <table>
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Title</th>
@@ -45,11 +70,9 @@
                     <th>Budget</th>
                     <th>Type</th>
                     <th>Description</th>
-                    <th>jobStatus</th>
                     <th>Rate</th>
-                    <th>propCount</th>
                     <th>Date</th>
-                    <th>Delete</th>
+                    <th>Edit</th>
                     <th>Delete</th>
                 </tr>
             </thead>
@@ -61,7 +84,7 @@
                             @Jobs[i].jobTitle
                         </th>
                         <th>
-                            @Jobs[i].clientID
+                            @Clients[i].fName @Clients[i].lName
                         </th>
                         <th>
                             @Jobs[i].jobBudget
@@ -73,13 +96,7 @@
                             @Jobs[i].jobDescription
                         </th>
                         <th>
-                            @Jobs[i].jobStatus
-                        </th>
-                        <th>
                             @Jobs[i].jobAVGRate
-                        </th>
-                        <th>
-                            @Jobs[i].propCount
                         </th>
                         <th>
                             @Jobs[i].creationDate
@@ -87,13 +104,13 @@
                         <th>
                             <form action="/Dashboard/PostsPage" method="post">
                                 <input style="display: none" type="text" name="jobID" value="@Jobs[i].jobID" />
-                                <input type="submit" value="Edit" />
+                                <input type="submit" value="Edit" class="btn btn-primary" />
                             </form>
                         </th>
                         <th>
                             <form action="/Dashboard/DeleteJob" method="post">
                                 <input style="display: none" type="text" name="jobID" value="@Jobs[i].jobID" />
-                                <input type="submit" value="Delete" />
+                                <input type="submit" value="Delete" class="btn btn-danger" />
                             </form>
                         </th>
                     </tr>
@@ -102,21 +119,65 @@
             </tbody>
         </table>
         <hr />
-        @if (Job != null)
-        {
-    <form action="/Dashboard/UpdateJob" method="post">
-        <h2>Update Data</h2>
-        <input style="display: none" type="text" name="jobID" value="@Job.jobID" />
-        <h3>Title: <input type="text" name="jobTitle" value="@Job.jobTitle" /></h3>
-        <h3>Budget: <input type="text" name="jobBudget" value="@Job.jobBudget" /></h3>
-        <h3>Type: <input type="text" name="jobType" value="@Job.jobType" /></h3>
-        <h3>Description: <input type="text" name="jobDescription" value="@Job.jobDescription" /></h3>
-        <input type="submit" value="Update" />
-    </form>
-        }
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
+
+
+    @if (Job != null)
+    {
+        <div class="row justify-content-center mt-5">
+            <form class=" col-md-4" action="/Dashboard/UpdateJob" method="post">
+                <h5>Update Data</h5>
+                <input style="display: none" type="text" name="jobID" value="@Job.jobID" />
+                <div class=" mt-4">
+                    <label for="validationCustom01" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="validationCustom01" name="jobTitle" value="@Job.jobTitle" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+                <div class=" mt-2">
+                    <label for="validationCustom02" class="form-label">Budget</label>
+                    <input type="text" class="form-control" id="validationCustom02" name="jobBudget" value="@Job.jobBudget" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+                <div class=" mt-2">
+                    <label for="validationCustom02" class="form-label">Type</label>
+                    <input type="text" class="form-control" id="validationCustom02" name="jobType" value="@Job.jobType" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+                <div class=" mt-2">
+                    <label for="validationCustom02" class="form-label">Description</label>
+                    <input type="text" class="form-control" id="exampleInputEmail1" name="jobDescription" value="@Job.jobDescription">
+                </div>
+
+                <button type="submit" class="btn btn-primary mt-2 col-12">Confirm edit</button>
+            </form>
+        </div>
+    }
+
     </div>
+
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-4">
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            </footer>
+        </div>
+    </div>
+
+    <script src="@script1"
+            integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+            crossorigin="anonymous"></script>
+    <script src="@script2"
+            integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+            crossorigin="anonymous"></script>
+    <script src="@script3"
+            integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
+            crossorigin="anonymous"></script>
+
 </body>
 </html>

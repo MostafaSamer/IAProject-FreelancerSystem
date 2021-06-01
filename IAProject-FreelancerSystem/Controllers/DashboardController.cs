@@ -41,7 +41,7 @@ namespace IAProject_FreelancerSystem.Controllers
         }
 
         [HttpPost]
-        public ViewResult UpdateAdmin(FormCollection formCollection)
+        public ActionResult UpdateAdmin(FormCollection formCollection)
         {
             // Action with Data
             User userToAdd = new User();
@@ -77,12 +77,33 @@ namespace IAProject_FreelancerSystem.Controllers
             user = new UserDB().SelectwithId("1");
             ViewData["User"] = user;
 
-            return View("Profile");
+            return RedirectToAction("Profile");
         }
 
         // USERS PAGE
         public ActionResult UsersPage(string userID)
         {
+            User user = new User();
+            user = Session["User"] as IAProject_FreelancerSystem.Models.User;
+
+            // Users
+            if (Session["User"] != null)
+            {
+                if (user.role == "client")
+                {
+                    return RedirectToAction("");
+                }
+                else if (user.role == "Freelancer")
+                {
+                    return RedirectToAction("Index", "Wall");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Wall");
+            }
+
             // All User
             List<User> list = new List<User>();
             list = new UserDB().SelectAll();
@@ -92,7 +113,7 @@ namespace IAProject_FreelancerSystem.Controllers
         }
 
         [HttpPost]
-        public ViewResult AddUser(FormCollection formCollection)
+        public ActionResult AddUser(FormCollection formCollection)
         {
             var test = formCollection["role"];
 
@@ -127,11 +148,11 @@ namespace IAProject_FreelancerSystem.Controllers
             list = list.FindAll(u => u.userID != 1);
             // Return to View Profile
             ViewData["Users"] = list;
-            return View("UsersPage");
+            return RedirectToAction("UsersPage");
         }
 
         [HttpPost]
-        public ViewResult DeleteUser(FormCollection formCollection)
+        public ActionResult DeleteUser(FormCollection formCollection)
         {
             // Delete User
             new UserDB().Delete(formCollection["userID"]);
@@ -141,12 +162,33 @@ namespace IAProject_FreelancerSystem.Controllers
             list = list.FindAll(u => u.userID != 1);
             // Return to View Profile
             ViewData["Users"] = list;
-            return View("UsersPage");
+            return RedirectToAction("UsersPage");
         }
 
         // POST PAGE
         public ActionResult PostsPage(string jobID)
         {
+            User user = new User();
+            user = Session["User"] as IAProject_FreelancerSystem.Models.User;
+
+            // Users
+            if (Session["User"] != null)
+            {
+                if (user.role == "client")
+                {
+                    return RedirectToAction("");
+                }
+                else if (user.role == "Freelancer")
+                {
+                    return RedirectToAction("Index", "Wall");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Wall");
+            }
+
             Job job = new Job();
             if (jobID != null)
             {
@@ -156,16 +198,24 @@ namespace IAProject_FreelancerSystem.Controllers
             {
                 job = null;
             }
+            // Jobs
             List<Job> list = new List<Job>();
             list = new JobDB().SelectAll();
             list = list.FindAll(u => u.jobAdminAcceptance == "Accepted" && u.jobStatus == "Waitting");
+            // Clients
+            List<User> clients = new List<User>();
+            for (int i = 0; i < list.Count(); i++)
+            {
+                clients.Add(new UserDB().SelectwithId(list[i].clientID.ToString()));
+            }
             ViewData["Jobs"] = list;
+            ViewData["Clients"] = clients;
             ViewData["Job"] = job;
             return View();
         }
 
         [HttpPost]
-        public ViewResult UpdateJob(FormCollection formCollection)
+        public ActionResult UpdateJob(FormCollection formCollection)
         {
             // Get Job
             Job jobToEdit = new Job();
@@ -182,12 +232,19 @@ namespace IAProject_FreelancerSystem.Controllers
             List<Job> list = new List<Job>();
             list = new JobDB().SelectAll();
             list = list.FindAll(u => u.jobAdminAcceptance == "Accepted" && u.jobStatus == "Waitting");
+            // Clients
+            List<User> clients = new List<User>();
+            for (int i = 0; i < list.Count(); i++)
+            {
+                clients.Add(new UserDB().SelectwithId(list[i].clientID.ToString()));
+            }
             ViewData["Jobs"] = list;
             ViewData["Job"] = null;
-            return View("PostsPage");
+            ViewData["Clients"] = clients;
+            return RedirectToAction("PostsPage");
         }
         
-        public ViewResult DeleteJob(FormCollection formCollection)
+        public ActionResult DeleteJob(FormCollection formCollection)
         {
             // Get Job
             Job job = new Job();
@@ -197,23 +254,60 @@ namespace IAProject_FreelancerSystem.Controllers
             List<Job> list = new List<Job>();
             list = new JobDB().SelectAll();
             list = list.FindAll(u => u.jobAdminAcceptance == "Accepted" && u.jobStatus == "Waitting");
+            // Clients
+            List<User> clients = new List<User>();
+            for (int i = 0; i < list.Count(); i++)
+            {
+                clients.Add(new UserDB().SelectwithId(list[i].clientID.ToString()));
+            }
             ViewData["Jobs"] = list;
             ViewData["Job"] = null;
-            return View("PostsPage");
+            ViewData["Clients"] = clients;
+            return RedirectToAction("PostsPage");
         }
 
         // POST REQ
         public ActionResult PostsRequests()
         {
+            User user = new User();
+            user = Session["User"] as IAProject_FreelancerSystem.Models.User;
+
+            // Users
+            if (Session["User"] != null)
+            {
+                if (user.role == "client")
+                {
+                    return RedirectToAction("");
+                }
+                else if (user.role == "Freelancer")
+                {
+                    return RedirectToAction("Index", "Wall");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Wall");
+            }
+
+            // Jobs
             List<Job> list = new List<Job>();
             list = new JobDB().SelectAll();
             list = list.FindAll(u => u.jobAdminAcceptance == "Waitting");
+            // Clients
+            List<User> clients = new List<User>();
+            for(int i = 0; i<list.Count(); i++)
+            {
+                clients.Add(new UserDB().SelectwithId(list[i].clientID.ToString()));
+            }
+
             ViewData["Jobs"] = list;
+            ViewData["Clients"] = clients;
             return View();
         }
 
         [HttpPost]
-        public ViewResult UpdateJobType(FormCollection formCollection)
+        public ActionResult UpdateJobType(FormCollection formCollection)
         {
             // Get the Job
             Job job = new Job();
@@ -222,12 +316,20 @@ namespace IAProject_FreelancerSystem.Controllers
             job.jobAdminAcceptance = formCollection["type"];
             // Set the Job
             new JobDB().Update(job);
-            // Get Jobs
+            // Jobs
             List<Job> list = new List<Job>();
             list = new JobDB().SelectAll();
             list = list.FindAll(u => u.jobAdminAcceptance == "Waitting");
+            // Clients
+            List<User> clients = new List<User>();
+            for (int i = 0; i < list.Count(); i++)
+            {
+                clients.Add(new UserDB().SelectwithId(list[i].clientID.ToString()));
+            }
+
             ViewData["Jobs"] = list;
-            return View("PostsRequests");
+            ViewData["Clients"] = clients;
+            return RedirectToAction("PostsRequests");
         }
 
         public ActionResult Logout()
