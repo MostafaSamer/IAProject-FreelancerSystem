@@ -60,21 +60,22 @@
                 <!-- End of Login Form -->
 
                 <!-- Start of Register Form -->
-                <form action="/Wall/RegisterForm" method="post">
+                using (Html.BeginForm("RegisterForm", "Wall", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
                     <h2>Register</h2>
-                    <h3>Image: <input type="text" name="userPhoto" /></h3>
                     <h3>First Name: <input type="text" name="fName" /></h3>
                     <h3>Last Name: <input type="text" name="lName" /></h3>
                     <h3>User Name: <input type="text" name="userName" /></h3>
                     <h3>Email: <input type="email" name="email" /></h3>
                     <h3>Phone Number: <input type="text" name="phoneNum" /></h3>
                     <h3>Password: <input type="password" name="userPassword" /></h3>
+                    <input type="file" name="postedFile" />
                     <select name="role">
                         <option value="client">Client</option>
                         <option value="freelancer">Freelancer</option>
                     </select>
                     <input type="submit" value="Register" />
-                </form>
+                }
                 <!-- End of Register Form -->
             }
             else
@@ -87,94 +88,117 @@
             }
         }
 
+        <form action="/Wall/Search" method="post">
+            <h2>Search with Title</h2>
+            <input style="display: none" type="text" name="type" value="title" />
+            <h3><input type="text" name="dataToSearch" /></h3>
+            <input type="submit" value="Search" />
+        </form>
+
+        <form action="/Wall/Search" method="post">
+            <h2>Search with Client</h2>
+            <input style="display: none" type="text" name="type" value="client" />
+            <h3><input type="text" name="dataToSearch" /></h3>
+            <input type="submit" value="Search" />
+        </form>
+
+        <form action="/Wall/Search" method="post">
+            <h2>Search with Client</h2>
+            <input style="display: none" type="text" name="type" value="createDate" />
+            <h3><input type="datetime-local" name="from_dataToSearch" /></h3>
+            <h3><input type="datetime-local" name="to_dataToSearch" /></h3>
+            <input type="submit" value="Search" />
+        </form>
+
         <!-- Start of Jobs Card -->
         @for (int i = 0; i < jobs.Count(); i++)
         {
-    <div>
-        <h3>@jobs[i].jobTitle</h3>
-        <h3>@jobs[i].jobBudget</h3>
-        <h3>@jobs[i].jobType</h3>
-        <h3>@jobs[i].jobDescription</h3>
-        <h3>@jobs[i].jobAVGRate</h3>
-        <h3>@jobs[i].propCount</h3>
+            <div>
+                <h3>jobTitle: @jobs[i].jobTitle</h3>
+                <h3>jobBudget: @jobs[i].jobBudget</h3>
+                <h3>jobType: @jobs[i].jobType</h3>
+                <h3>jobDescription: @jobs[i].jobDescription</h3>
+                <h3>jobAVGRate: @jobs[i].jobAVGRate</h3>
+                <h3>propCount: @jobs[i].propCount</h3>
+                <h3>creationDate: @jobs[i].creationDate</h3>
 
-        <!-- If Login as Freelancer -->
-        @if (User != null)
-        {
-
-            <!-- Start of Save -->
-            <form action="/Wall/SaveJob" method="post">
-                <input style="display: none" type="text" name="userID" value="@User.userID" />
-                <input style="display: none" type="text" name="jobID" value="@jobs[i].jobID" />
-                <input style="display: none" type="text" name="jobTitle" value="@jobs[i].jobTitle" />
-                @if (savedJobs.FindAll(s => s.jobID == jobs[i].jobID).Count() == 0)
+                <!-- If Login as Freelancer -->
+                @if (User != null)
                 {
-                    <input type="submit" value="Save" />
-                }
-                else
-                {
-                    <h5>Saved</h5>
-                }
-            </form>
-            <!-- End of Save -->
+
+                    <!-- Start of Save -->
+                    <form action="/Wall/SaveJob" method="post">
+                        <input style="display: none" type="text" name="userID" value="@User.userID" />
+                        <input style="display: none" type="text" name="jobID" value="@jobs[i].jobID" />
+                        <input style="display: none" type="text" name="jobTitle" value="@jobs[i].jobTitle" />
+                        @if (savedJobs.FindAll(s => s.jobID == jobs[i].jobID).Count() == 0)
+                        {
+                            <input type="submit" value="Save" />
+                        }
+                        else
+                        {
+                            <h5>Saved</h5>
+                        }
+                    </form>
+                    <!-- End of Save -->
 
 
-            <!-- Start of Propsel -->
-            <script type="text/javascript">
-                function ToggleDiv(id) {
-                    console.log(id)
-                    if (document.getElementById(id).style.display == 'block')
-                        document.getElementById(id).style.display = 'none';
+                    <!-- Start of Propsel -->
+                    <script type="text/javascript">
+                        function ToggleDiv(id) {
+                            console.log(id)
+                            if (document.getElementById(id).style.display == 'block')
+                                document.getElementById(id).style.display = 'none';
+                            else
+                                document.getElementById(id).style.display = 'block';
+                        }
+                    </script>
+                    if (proposels.FindAll(s => s.jobID == jobs[i].jobID).Count() == 0)
+                    {
+                        <button ID="btn" runat="server" Text="Show First Div"
+                                onclick="ToggleDiv(@jobs[i].jobID);">
+                            Give a Proposel
+                        </button>
+                    }
                     else
-                        document.getElementById(id).style.display = 'block';
+                    {
+                        <h5>Proposel Already Send</h5>
+                    }
+                    <br />
+                    <div id="@jobs[i].jobID" style="display: none;">
+                        <form action="/Wall/GivePropsel" method="post">
+                            <input style="display: none" type="text" name="userID" value="@User.userID" />
+                            <input style="display: none" type="text" name="jobID" value="@jobs[i].jobID" />
+                            Price: <input type="number" name="propPrice" />
+                            Describtion: <textarea type="text" name="propDescription"></textarea>
+                            <input type="submit" value="Submit" />
+                        </form>
+                    </div>
+                    <!-- End of Propsel -->
+
+
+
+                    <!-- Start of Rate -->
+                    if (rates.FindAll(r => r.jobID == jobs[i].jobID).Count() != 0)
+                    {
+                        <h5>@rates.FindAll(r => r.jobID == jobs[i].jobID)[0].rate / 5</h5>
+                    }
+                    else
+                    {
+                        <form action="/Wall/GiveRate" method="post">
+                            <input style="display: none" type="text" name="userID" value="@User.userID" />
+                            <input style="display: none" type="text" name="jobID" value="@jobs[i].jobID" />
+                            <input type="number" max="5" name="rateToAdd" />
+                            <input type="submit" value="Rate" />
+                        </form>
+                    }
+                    <!-- End of Rate -->
                 }
-            </script>
-            if (proposels.FindAll(s => s.jobID == jobs[i].jobID).Count() == 0)
-            {
-                <button ID="btn" runat="server" Text="Show First Div"
-                        onclick="ToggleDiv(@jobs[i].jobID);">
-                    Give a Proposel
-                </button>
-            }
-            else
-            {
-                <h5>Proposel Already Send</h5>
-            }
-            <br />
-            <div id="@jobs[i].jobID" style="display: none;">
-                <form action="/Wall/GivePropsel" method="post">
-                    <input style="display: none" type="text" name="userID" value="@User.userID" />
-                    <input style="display: none" type="text" name="jobID" value="@jobs[i].jobID" />
-                    Price: <input type="number" name="propPrice" />
-                    Describtion: <textarea type="text" name="propDescription"></textarea>
-                    <input type="submit" value="Submit" />
-                </form>
+                <!-- End of Jobs Card -->
+
+                <hr />
+
             </div>
-            <!-- End of Propsel -->
-
-
-
-            <!-- Start of Rate -->
-            if (rates.FindAll(r => r.jobID == jobs[i].jobID).Count() != 0)
-            {
-                <h5>@rates.FindAll(r => r.jobID == jobs[i].jobID)[0].rate / 5</h5>
-            }
-            else
-            {
-                <form action="/Wall/GiveRate" method="post">
-                    <input style="display: none" type="text" name="userID" value="@User.userID" />
-                    <input style="display: none" type="text" name="jobID" value="@jobs[i].jobID" />
-                    <input type="number" max="5" name="rateToAdd" />
-                    <input type="submit" value="Rate" />
-                </form>
-            }
-            <!-- End of Rate -->
-        }
-        <!-- End of Jobs Card -->
-
-        <hr />
-
-    </div>
         }
         <hr />
         <footer>

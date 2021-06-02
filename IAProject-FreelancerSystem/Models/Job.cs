@@ -15,7 +15,7 @@ namespace IAProject_FreelancerSystem.Models
         public string jobType { set; get; }
         public string creationDate { set; get; }
         public string jobDescription { set; get; }
-        public int jobAVGRate { set; get; }
+        public float jobAVGRate { set; get; }
         public string jobStatus { set; get; }
         public string jobAdminAcceptance { set; get; }
         public int propCount { set; get; }

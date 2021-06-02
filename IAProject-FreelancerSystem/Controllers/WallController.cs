@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -17,23 +18,34 @@ namespace IAProject_FreelancerSystem.Controllers
             {
                 var user = Session["User"] as IAProject_FreelancerSystem.Models.User;
 
-                // ProposeledJob
-                List<Proposal> proposelJob = new List<Proposal>();
-                proposelJob = new ProposalsDB().SelectAll();
-                proposelJob = proposelJob.FindAll(p => p.freelancerID == user.userID);
-                ViewData["proposelJob"] = proposelJob;
+                if (user.role == "admin")
+                {
+                    return RedirectToAction("Profile", "Dashboard");
+                }
+                else if (user.role == "client")
+                {
+                    return RedirectToAction("");
+                }
+                else
+                {
+                    // ProposeledJob
+                    List<Proposal> proposelJob = new List<Proposal>();
+                    proposelJob = new ProposalsDB().SelectAll();
+                    proposelJob = proposelJob.FindAll(p => p.freelancerID == user.userID);
+                    ViewData["proposelJob"] = proposelJob;
 
-                // SavedJob
-                List<SavedJob> savedJobs = new List<SavedJob>();
-                savedJobs = new SavedJobDB().SelectAll();
-                savedJobs = savedJobs.FindAll(s => s.freelancerID == user.userID);
-                ViewData["savedJobs"] = savedJobs;
+                    // SavedJob
+                    List<SavedJob> savedJobs = new List<SavedJob>();
+                    savedJobs = new SavedJobDB().SelectAll();
+                    savedJobs = savedJobs.FindAll(s => s.freelancerID == user.userID);
+                    ViewData["savedJobs"] = savedJobs;
 
-                // RatedJob
-                List<Rate> ratedJobs = new List<Rate>();
-                ratedJobs = new RateDB().SelectAll();
-                ratedJobs = ratedJobs.FindAll(r => r.freelancerID == user.userID);
-                ViewData["ratedJobs"] = ratedJobs;
+                    // RatedJob
+                    List<Rate> ratedJobs = new List<Rate>();
+                    ratedJobs = new RateDB().SelectAll();
+                    ratedJobs = ratedJobs.FindAll(r => r.freelancerID == user.userID);
+                    ViewData["ratedJobs"] = ratedJobs;
+                }
 
 
             }
@@ -49,7 +61,7 @@ namespace IAProject_FreelancerSystem.Controllers
         }
 
         [HttpPost]
-        public ViewResult LoginForm(FormCollection formCollection)
+        public ActionResult LoginForm(FormCollection formCollection)
         {
             var userName = formCollection["userName"];
             var password = formCollection["password"];
@@ -93,10 +105,10 @@ namespace IAProject_FreelancerSystem.Controllers
 
             ViewData["Jobs"] = jobs;
 
-            return View("Index");
+            return RedirectToAction("Index");
         }
         
-        public ViewResult LogoutForm(FormCollection formCollectiion)
+        public ActionResult LogoutForm(FormCollection formCollectiion)
         {
             // User
             Session["User"] = null;
@@ -108,13 +120,27 @@ namespace IAProject_FreelancerSystem.Controllers
 
             ViewData["Jobs"] = jobs;
 
-            return View("Index");
+            return RedirectToAction("Index");
         }
         
-        public ViewResult RegisterForm(FormCollection formCollectiion)
+        public ActionResult RegisterForm(FormCollection formCollectiion)
         {
             User user = new User();
-            user.userPhoto = formCollectiion["userPhoto"];
+            // Upload File
+            if (Request.Files.Count > 0)
+            {
+                HttpPostedFileBase postedFile = Request.Files["postedFile"];
+                string path = Server.MapPath("~/Uploads/");
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                postedFile.SaveAs(path + DateTime.Now.ToString("yyyyMMdd_hhmmss") + ".jpg");
+
+                user.userPhoto = "https://localhost:44388/Uploads/" + DateTime.Now.ToString("yyyyMMdd_hhmmss") + ".jpg";
+
+            }
             user.fName = formCollectiion["fName"];
             user.lName = formCollectiion["lName"];
             user.userName = formCollectiion["userName"];
@@ -135,9 +161,9 @@ namespace IAProject_FreelancerSystem.Controllers
 
             ViewData["Jobs"] = jobs;
 
-            return View("Index");
+            return RedirectToAction("Index");
         }
-        public ViewResult SaveJob(FormCollection formCollectiion)
+        public ActionResult SaveJob(FormCollection formCollectiion)
         {
             // Save the Job
             var UserID = formCollectiion["userID"];
@@ -174,15 +200,24 @@ namespace IAProject_FreelancerSystem.Controllers
 
             ViewData["Jobs"] = jobs;
 
-            return View("Index");
+            return RedirectToAction("Index");
         }
 
-        public ViewResult GiveRate(FormCollection formCollection)
+        public ActionResult GiveRate(FormCollection formCollection)
         {
             // Get Data
             var userID = formCollection["userID"];
             var jobID = formCollection["jobID"];
             var rateToAdd = formCollection["rateToAdd"];
+
+            // Update Rate Ang in this Jobs
+            List<Rate> listOldRate = new RateDB().SelectAll();
+            var numUser = listOldRate.FindAll(r => r.jobID == Int32.Parse(jobID)).Count();
+            var oldJob = new JobDB().SelectwithId(jobID);
+            var oldAvgRate = oldJob.jobAVGRate;
+            var newRate = ((oldAvgRate*numUser)+Int32.Parse(rateToAdd))/(numUser+1);
+            oldJob.jobAVGRate = newRate;
+            new JobDB().Update(oldJob);
 
             // Save the Rate
             Rate rate = new Rate();
@@ -190,6 +225,7 @@ namespace IAProject_FreelancerSystem.Controllers
             rate.jobID = Int32.Parse(jobID);
             rate.rate = Int32.Parse(rateToAdd);
             new RateDB().Insert(rate);
+            
 
             var user = Session["User"] as IAProject_FreelancerSystem.Models.User;
 
@@ -218,10 +254,10 @@ namespace IAProject_FreelancerSystem.Controllers
 
             ViewData["Jobs"] = jobs;
 
-            return View("Index");
+            return RedirectToAction("Index");
         }
 
-        public ViewResult GivePropsel(FormCollection formCollection)
+        public ActionResult GivePropsel(FormCollection formCollection)
         {
             // Get the data
             var userID = formCollection["userID"];
@@ -266,6 +302,94 @@ namespace IAProject_FreelancerSystem.Controllers
 
             ViewData["Jobs"] = jobs;
 
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Search(FormCollection formCollection)
+        {
+            // Users
+            if (Session["User"] != null)
+            {
+                var user = Session["User"] as IAProject_FreelancerSystem.Models.User;
+
+                if (user.role == "admin")
+                {
+                    return RedirectToAction("Profile", "Dashboard");
+                }
+                else if (user.role == "client")
+                {
+                    return RedirectToAction("");
+                }
+                else
+                {
+                    // ProposeledJob
+                    List<Proposal> proposelJob = new List<Proposal>();
+                    proposelJob = new ProposalsDB().SelectAll();
+                    proposelJob = proposelJob.FindAll(p => p.freelancerID == user.userID);
+                    ViewData["proposelJob"] = proposelJob;
+
+                    // SavedJob
+                    List<SavedJob> savedJobs = new List<SavedJob>();
+                    savedJobs = new SavedJobDB().SelectAll();
+                    savedJobs = savedJobs.FindAll(s => s.freelancerID == user.userID);
+                    ViewData["savedJobs"] = savedJobs;
+
+                    // RatedJob
+                    List<Rate> ratedJobs = new List<Rate>();
+                    ratedJobs = new RateDB().SelectAll();
+                    ratedJobs = ratedJobs.FindAll(r => r.freelancerID == user.userID);
+                    ViewData["ratedJobs"] = ratedJobs;
+                }
+
+
+            }
+            // Jobs
+            List<Job> jobs = new List<Job>();
+            jobs = new JobDB().SelectAll();
+
+            jobs = jobs.FindAll(j => j.jobAdminAcceptance == "Accepted" && j.jobStatus == "Waitting");
+            // Filter with Search
+            if(formCollection["type"] == "title")
+            {
+                var dataToSearch = formCollection["dataToSearch"];
+                // Search with Job Title
+                jobs = jobs.FindAll(j => j.jobTitle == dataToSearch);
+            }
+            else if(formCollection["type"] == "client")
+            {
+                var dataToSearch = formCollection["dataToSearch"];
+                // Search with client name
+                jobs = jobs.FindAll(j =>
+                {
+                    User user = new UserDB().SelectwithId(j.clientID.ToString());
+                    return (user.fName == dataToSearch || user.lName == dataToSearch || user.userName == dataToSearch);
+                }
+                );
+            }
+            else
+            {
+                var from_dataToSearch = formCollection["from_dataToSearch"];
+                var to_dataToSearch = formCollection["to_dataToSearch"];
+                if(from_dataToSearch != "" && to_dataToSearch == "")
+                {
+                    // Search with only from
+                    jobs = jobs.FindAll(j => DateTime.Parse(j.creationDate) > DateTime.Parse(from_dataToSearch));
+                }
+                else if (from_dataToSearch == "" && to_dataToSearch != "")
+                {
+                    // Search with only from
+                    jobs = jobs.FindAll(j => DateTime.Parse(j.creationDate) < DateTime.Parse(to_dataToSearch));
+                }
+                else if (from_dataToSearch != "" && to_dataToSearch != "")
+                {
+                    // Search with only from
+                    jobs = jobs.FindAll(j => DateTime.Parse(j.creationDate) > DateTime.Parse(from_dataToSearch) && DateTime.Parse(j.creationDate) < DateTime.Parse(to_dataToSearch));
+                }
+
+
+            }
+            ViewData["Jobs"] = jobs;
+
             return View("Index");
         }
 
@@ -280,7 +404,7 @@ namespace IAProject_FreelancerSystem.Controllers
 
                 ViewData["Jobs"] = jobs;
 
-                return View("Index");
+                return RedirectToAction("Index");
             }
 
             var user = Session["User"] as IAProject_FreelancerSystem.Models.User;
