@@ -1,54 +1,95 @@
 ﻿
 @{
     ViewBag.Title = "ReceivedProposals";
-    var proposals= ViewData["proposals"] as List<IAProject_FreelancerSystem.Models.Proposal>;
+    var jobList = ViewData["jobList"] as List<IAProject_FreelancerSystem.Models.Job>;
+    var proposalList = ViewData["proposalList"] as List<IAProject_FreelancerSystem.Models.Proposal>;
+    var userList = ViewData["userList"] as List<IAProject_FreelancerSystem.Models.User>;
+
 }
-
-<h2>ReceivedProposals</h2>
-
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="style.css">
+
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title = "PostsPage";</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    <title>"PostsPage"</title>
+
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("FreeLance", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Profile", "Profile", "FactoryLayout")</li>
-                    <li>@Html.ActionLink("Create New Post", "CreateNewPost", "FactoryLayout")</li>
-                    <li>@Html.ActionLink("My Posts", "MyPosts", "FactoryLayout")</li>
-                    <li>@Html.ActionLink("Recived Proposals", "ReceivedProposals", "FactoryLayout")</li>
+            <a class="navbar-brand" href="/Dashboard/profile">Freelance Project</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/FactoryLayout/Profile">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/FactoryLayout/CreateNewPost">Create New Post</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/FactoryLayout/MyPosts">My Posts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/FactoryLayout/ReceivedProposals">Recived Proposals</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/FactoryLayout/Logout">Logout</a>
+                    </li>
                 </ul>
             </div>
         </div>
-    </div>
+    </nav>
+
     <br>
     <br>
     <div class="container body-content">
-        @for (int i = 0; i < proposals.Count(); i++)
+        @for (int i = 0; i < jobList.Count(); i++)
         {
+            <h4>For the Job: @jobList[i].jobTitle</h4>
             <div class="myDiv">
-                <p>@proposals[i].propID</p>
-                <p>@proposals[i].jobID</p>
-                <p>@proposals[i].freelancerID</p>
-                <p>@proposals[i].propDescription</p>
-                <p>@proposals[i].propPrice</p>
+                @for (int j = 0; j < proposalList.FindAll(p => p.jobID == jobList[i].jobID).Count(); j++)
+                {
+                    var prop = proposalList.FindAll(p => p.jobID == jobList[i].jobID)[j];
+                    <h6>Price: @prop.propPrice</h6>
+                    <h6>Description: @prop.propDescription</h6>
+                    <h6>Freelancer: @userList.FindAll(u => u.userID == prop.freelancerID)[0].userName</h6>
+                    <form action="/FactoryLayout/AcceptProposel" method="post" class="col-md-6">
+                        <input style="display: none" type="text" name="jobID" value="@jobList[i].jobID" />
+                        <input style="display: none" type="text" name="freelancerID" value="@prop.freelancerID" />
+                        @if (jobList[i].freelancerID == 0)
+                        {
+                            <button type="submit" class="btn btn-primary mb-2">Accept</button>
+                        }
+                    </form>
+                }
+                <hr />
             </div>
         }
     </div>
+
+
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-4">
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            </footer>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
 </body>
 </html>

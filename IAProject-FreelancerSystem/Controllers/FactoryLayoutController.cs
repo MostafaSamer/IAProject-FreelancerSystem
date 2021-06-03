@@ -103,37 +103,48 @@ namespace IAProject_FreelancerSystem.Controllers
             ViewData["jobs"] = list_posts;
             return View("MyPosts");
         }
-           public ActionResult myposts(Job post)
+           public ActionResult myposts(string jobID)
            {
 
-            User user = new User();
-            user = Session["User"] as IAProject_FreelancerSystem.Models.User;
-            // Users
-            if (Session["User"] != null)
-            {
-                if (user.role == "admin")
+                User user = new User();
+                user = Session["User"] as IAProject_FreelancerSystem.Models.User;
+                // Users
+                if (Session["User"] != null)
                 {
-                    return RedirectToAction("Profile", "Dashboard");
+                    if (user.role == "admin")
+                    {
+                        return RedirectToAction("Profile", "Dashboard");
+                    }
+                    else if (user.role == "Freelancer")
+                    {
+                        return RedirectToAction("Index", "Wall");
+                    }
+
                 }
-                else if (user.role == "Freelancer")
+                else
                 {
                     return RedirectToAction("Index", "Wall");
                 }
 
+                List<Job> list_posts = new List<Job>();
+                list_posts = new JobDB().SelectAll();
+                list_posts = list_posts.FindAll(J => J.clientID == user.userID);
+                // Return to View Profile
+                ViewData["jobs"] = list_posts;
+
+            Job job = new Job();
+            if (jobID != null)
+            {
+                job = new JobDB().SelectwithId(jobID);
             }
             else
             {
-                return RedirectToAction("Index", "Wall");
+                job = null;
             }
-
-            List<Job> list_posts = new List<Job>();
-            list_posts = new JobDB().SelectAll();
-            list_posts = list_posts.FindAll(J => J.clientID == user.userID);
-            // Return to View Profile
-            ViewData["jobs"] = list_posts;
+            ViewData["Job"] = job;
             return View("MyPosts");
-        }
-           public ActionResult receivedproposals(Proposal proposal)
+            }
+           public ActionResult receivedproposals()
            {
 
             User user = new User();
@@ -157,19 +168,31 @@ namespace IAProject_FreelancerSystem.Controllers
             }
 
             // Get all User Job
-            List<Job> list_posts = new JobDB().SelectAll();
-            list_posts = list_posts.FindAll(J => J.clientID == user.userID);
+            List<Job> jobList = new JobDB().SelectAll();
+            jobList = jobList.FindAll(J => J.clientID == user.userID);
 
             // Get all Proposels
-            List<Proposal> list_proposals = new ProposalsDB().SelectAll();
+            List<Proposal> AllproposalList = new ProposalsDB().SelectAll();
+            List<Proposal> proposalList = new List<Proposal>();
 
-            for(int i = 0; i<list_posts.Count(); i++)
+            for (int i = 0; i < jobList.Count(); i++)
             {
-                // List<Proposal> temp = list_proposals.FindAll()
+                List<Proposal> temp = AllproposalList.FindAll(p => p.jobID == jobList[i].jobID);
+                proposalList.AddRange(temp);
             }
+
+            // Get all User that proposed
+            List<User> userList = new List<User>();
+            for(int i = 0; i<proposalList.Count(); i++)
+            {
+                userList.Add(new UserDB().SelectwithId(proposalList[i].freelancerID.ToString()));
+            } 
+            
             // ** We need to send Jobs , Proposel for each Job, Client for each Proposel **
             // Return to View Profile
-            ViewData["proposals"] = list_proposals;
+            ViewData["jobList"] = jobList;
+            ViewData["proposalList"] = proposalList;
+            ViewData["userList"] = userList;
             return View("ReceivedProposals");
         }
 
@@ -235,6 +258,142 @@ namespace IAProject_FreelancerSystem.Controllers
             ViewData["User"] = user;
 
             return RedirectToAction("Profile");
+        }
+
+        public ActionResult EditJob(FormCollection formCollection)
+        {
+            User user = new User();
+            user = Session["User"] as IAProject_FreelancerSystem.Models.User;
+
+            // Users
+            if (Session["User"] != null)
+            {
+                if (user.role == "admin")
+                {
+                    return RedirectToAction("Profile", "Dashboard");
+                }
+                else if (user.role == "Freelancer")
+                {
+                    return RedirectToAction("Index", "Wall");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Wall");
+            }
+
+            // Get Job
+            Job jobToEdit = new Job();
+            jobToEdit = new JobDB().SelectwithId(formCollection["jobID"]);
+            jobToEdit.jobTitle = formCollection["jobTitle"];
+            jobToEdit.jobBudget = Int32.Parse(formCollection["jobBudget"]);
+            jobToEdit.jobType = formCollection["jobType"];
+            jobToEdit.jobDescription = formCollection["jobDescription"];
+
+            // Update Data
+            new JobDB().Update(jobToEdit);
+
+            return RedirectToAction("MyPosts");
+        }
+
+        public ActionResult Search(FormCollection formCollection)
+        {
+            User user = new User();
+            user = Session["User"] as IAProject_FreelancerSystem.Models.User;
+
+            // Users
+            if (Session["User"] != null)
+            {
+                if (user.role == "admin")
+                {
+                    return RedirectToAction("Profile", "Dashboard");
+                }
+                else if (user.role == "Freelancer")
+                {
+                    return RedirectToAction("Index", "Wall");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Wall");
+            }
+
+
+            var dataToSearch = formCollection["dataToSearch"];
+
+            List<Job> list_posts = new List<Job>();
+            list_posts = new JobDB().SelectAll();
+            list_posts = list_posts.FindAll(J => J.clientID == user.userID);
+            if(dataToSearch != "")
+                list_posts = list_posts.FindAll(J => J.jobTitle == dataToSearch);
+
+            // Return to View Profile
+            ViewData["jobs"] = list_posts;
+            ViewData["Job"] = null;
+
+            return View("MyPosts");
+        }
+
+        public ActionResult AcceptProposel(FormCollection formCollection)
+        {
+            User user = new User();
+            user = Session["User"] as IAProject_FreelancerSystem.Models.User;
+            // Users
+            if (Session["User"] != null)
+            {
+                if (user.role == "admin")
+                {
+                    return RedirectToAction("Profile", "Dashboard");
+                }
+                else if (user.role == "Freelancer")
+                {
+                    return RedirectToAction("Index", "Wall");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Wall");
+            }
+
+            // Update Job
+            var jobID = formCollection["jobID"];
+            var freelancerID = formCollection["freelancerID"];
+            Job jobToEdit = new JobDB().SelectwithId(jobID);
+            jobToEdit.freelancerID = Int32.Parse(freelancerID);
+            jobToEdit.jobStatus = "Accepted";
+            new JobDB().Update(jobToEdit);
+
+
+            // Get all User Job
+            List<Job> jobList = new JobDB().SelectAll();
+            jobList = jobList.FindAll(J => J.clientID == user.userID);
+
+            // Get all Proposels
+            List<Proposal> AllproposalList = new ProposalsDB().SelectAll();
+            List<Proposal> proposalList = new List<Proposal>();
+
+            for (int i = 0; i < jobList.Count(); i++)
+            {
+                List<Proposal> temp = AllproposalList.FindAll(p => p.jobID == jobList[i].jobID);
+                proposalList.AddRange(temp);
+            }
+
+            // Get all User that proposed
+            List<User> userList = new List<User>();
+            for (int i = 0; i < proposalList.Count(); i++)
+            {
+                userList.Add(new UserDB().SelectwithId(proposalList[i].freelancerID.ToString()));
+            }
+
+            // ** We need to send Jobs , Proposel for each Job, Client for each Proposel **
+            // Return to View Profile
+            ViewData["jobList"] = jobList;
+            ViewData["proposalList"] = proposalList;
+            ViewData["userList"] = userList;
+            return View("ReceivedProposals");
         }
 
     }

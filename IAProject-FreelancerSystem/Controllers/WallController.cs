@@ -266,6 +266,12 @@ namespace IAProject_FreelancerSystem.Controllers
             var propDescription = formCollection["propDescription"];
             var clientAcceptance = "Waitting";
 
+            // Update Job Proposel Count
+            Job job = new JobDB().SelectwithId(jobID);
+            job.propCount++;
+            new JobDB().Update(job);
+
+            // Save the Proposel
             Proposal proposal = new Proposal();
             proposal.freelancerID = Int32.Parse(userID);
             proposal.jobID = Int32.Parse(jobID);
