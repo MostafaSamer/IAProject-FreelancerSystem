@@ -24,7 +24,7 @@ namespace IAProject_FreelancerSystem.Controllers
                 }
                 else if (user.role == "client")
                 {
-                    return RedirectToAction("");
+                    return RedirectToAction("Profile", "FactoryLayout");
                 }
                 else
                 {
@@ -318,7 +318,7 @@ namespace IAProject_FreelancerSystem.Controllers
                 }
                 else if (user.role == "client")
                 {
-                    return RedirectToAction("");
+                    return RedirectToAction("Profile", "FactoryLayout");
                 }
                 else
                 {
