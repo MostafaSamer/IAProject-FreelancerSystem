@@ -23,7 +23,7 @@ namespace IAProject_FreelancerSystem.Controllers
             {
                 if (user.role == "client")
                 {
-                    return RedirectToAction("");
+                    return RedirectToAction("Profile", "FactoryLayout");
                 }
                 else if (user.role == "Freelancer")
                 {
@@ -43,6 +43,27 @@ namespace IAProject_FreelancerSystem.Controllers
         [HttpPost]
         public ActionResult UpdateAdmin(FormCollection formCollection)
         {
+            User user = new User();
+            user = Session["User"] as IAProject_FreelancerSystem.Models.User;
+
+            // Users
+            if (Session["User"] != null)
+            {
+                if (user.role == "client")
+                {
+                    return RedirectToAction("Profile", "FactoryLayout");
+                }
+                else if (user.role == "Freelancer")
+                {
+                    return RedirectToAction("Index", "Wall");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Wall");
+            }
+
             // Action with Data
             User userToAdd = new User();
 
@@ -73,8 +94,6 @@ namespace IAProject_FreelancerSystem.Controllers
             userToAdd.role = formCollection["role"];
             new UserDB().Update(userToAdd);
 
-            User user = new User();
-            user = new UserDB().SelectwithId("1");
             ViewData["User"] = user;
 
             return RedirectToAction("Profile");
@@ -91,7 +110,7 @@ namespace IAProject_FreelancerSystem.Controllers
             {
                 if (user.role == "client")
                 {
-                    return RedirectToAction("");
+                    return RedirectToAction("Profile", "FactoryLayout");
                 }
                 else if (user.role == "Freelancer")
                 {
@@ -176,7 +195,7 @@ namespace IAProject_FreelancerSystem.Controllers
             {
                 if (user.role == "client")
                 {
-                    return RedirectToAction("");
+                    return RedirectToAction("Profile", "FactoryLayout");
                 }
                 else if (user.role == "Freelancer")
                 {
@@ -217,6 +236,27 @@ namespace IAProject_FreelancerSystem.Controllers
         [HttpPost]
         public ActionResult UpdateJob(FormCollection formCollection)
         {
+            User user = new User();
+            user = Session["User"] as IAProject_FreelancerSystem.Models.User;
+
+            // Users
+            if (Session["User"] != null)
+            {
+                if (user.role == "client")
+                {
+                    return RedirectToAction("Profile", "FactoryLayout");
+                }
+                else if (user.role == "Freelancer")
+                {
+                    return RedirectToAction("Index", "Wall");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Wall");
+            }
+
             // Get Job
             Job jobToEdit = new Job();
             jobToEdit = new JobDB().SelectwithId(formCollection["jobID"]);
@@ -246,6 +286,27 @@ namespace IAProject_FreelancerSystem.Controllers
         
         public ActionResult DeleteJob(FormCollection formCollection)
         {
+            User user = new User();
+            user = Session["User"] as IAProject_FreelancerSystem.Models.User;
+
+            // Users
+            if (Session["User"] != null)
+            {
+                if (user.role == "client")
+                {
+                    return RedirectToAction("Profile", "FactoryLayout");
+                }
+                else if (user.role == "Freelancer")
+                {
+                    return RedirectToAction("Index", "Wall");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Wall");
+            }
+
             // Get Job
             Job job = new Job();
             new JobDB().Delete(formCollection["jobID"]);
@@ -277,7 +338,7 @@ namespace IAProject_FreelancerSystem.Controllers
             {
                 if (user.role == "client")
                 {
-                    return RedirectToAction("");
+                    return RedirectToAction("Profile", "FactoryLayout");
                 }
                 else if (user.role == "Freelancer")
                 {
@@ -309,6 +370,27 @@ namespace IAProject_FreelancerSystem.Controllers
         [HttpPost]
         public ActionResult UpdateJobType(FormCollection formCollection)
         {
+            User user = new User();
+            user = Session["User"] as IAProject_FreelancerSystem.Models.User;
+
+            // Users
+            if (Session["User"] != null)
+            {
+                if (user.role == "client")
+                {
+                    return RedirectToAction("Profile", "FactoryLayout");
+                }
+                else if (user.role == "Freelancer")
+                {
+                    return RedirectToAction("Index", "Wall");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Wall");
+            }
+
             // Get the Job
             Job job = new Job();
             job = new JobDB().SelectwithId(formCollection["jobID"]);
