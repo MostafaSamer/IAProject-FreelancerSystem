@@ -131,12 +131,21 @@
                                 Looks good!
                             </div>
                         </div>
-                        <div class=" mt-2">
-                            <label for="validationCustom02" class="form-label">Type</label>
-                            <input type="text" class="form-control" id="validationCustom02" name="jobType" value="@Job.jobType" required>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
+                        <div class="mt-2">
+                            <label for="validationCustom02" class="form-label">Role:</label>
+                            <select class="form-control" aria-label="Default select example" name="jobType" value="@Job.jobType">
+                                @if (Job.jobType == "Hourely")
+                                {
+                                    <option value="Hourely" selected>Hourely</option>
+                                    <option value="Fixed">Fixed</option>
+                                }
+                                else
+                                {
+                                    <option value="Hourely">Hourely</option>
+                                    <option value="Fixed" selected>Fixed</option>
+                                }
+                            </select>
+
                         </div>
                         <div class=" mt-2">
                             <label for="validationCustom02" class="form-label">Description</label>

@@ -15,8 +15,8 @@ namespace IAProject_FreelancerSystem
 
             routes.MapRoute(
                 name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                url: "{controller}/{action}",
+                defaults: new { controller = "Wall", action = "Index"}
             );
 
             routes.MapRoute(
@@ -28,7 +28,7 @@ namespace IAProject_FreelancerSystem
             routes.MapRoute(
                 name: "Wall",
                 url: "Wall/{action}",
-                defaults: new { controller = "Dashboard", action = "Index" }
+                defaults: new { controller = "Wall", action = "Index" }
             );
             routes.MapRoute(
                  name: "FactoryLayout",

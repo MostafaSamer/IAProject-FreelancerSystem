@@ -1,7 +1,6 @@
 ﻿* {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
-
 .main-color {
     color: rgb(27, 97, 202);
 }
@@ -24,5 +23,30 @@
 
 .bg {
     background-color: rgb(240, 240, 240);
-    background-image: url(./wave-textures-white-background-vector_53876-60286.jpg);
+    background-image: url(wave-textures-white-background-vector_53876-60286.jpg);
+}
+
+.price {
+    padding: 4px 20px;
+    background-color: rgb(224 224 224 / 25%);
+    font-size: 16px;
+    border-radius: 50px;
+    font-weight: 600;
+    color: darkgreen;
+    font-size: 16px;
+}
+
+.fa-star {
+    color: darkorange;
+    padding-right: 10px;
+}
+
+.card-title {
+    font-size: 24px;
+}
+
+.active {
+    background-color: gainsboro !important;
+    color: #aaa !important;
+    cursor: inherit !important;
 }

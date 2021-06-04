@@ -7,7 +7,7 @@
 
     var rates = ViewData["ratedJobs"] as List<IAProject_FreelancerSystem.Models.Rate>;
 
-    var proposels= ViewData["proposelJob"] as List<IAProject_FreelancerSystem.Models.Proposal>;
+    var proposels = ViewData["proposelJob"] as List<IAProject_FreelancerSystem.Models.Proposal>;
 
     var jobs = ViewData["Jobs"] as List<IAProject_FreelancerSystem.Models.Job>;
 
@@ -16,6 +16,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 
     <link rel="stylesheet" href="style.css">
 
@@ -39,7 +40,7 @@
                     @if (User != null)
                     {
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/Wall/SavedJobs">Your Saved Jobs</a>
+                            <a class="nav-link" aria-current="page" href="/Wall/SavedJobs">Your Saved Jobs</a>
                         </li>
                     }
                 </ul>
@@ -112,95 +113,114 @@
         </form>
 
         <!-- Start of Jobs Card -->
-        @for (int i = 0; i < jobs.Count(); i++)
-        {
-            <div>
-                <h3>jobTitle: @jobs[i].jobTitle</h3>
-                <h3>jobBudget: @jobs[i].jobBudget</h3>
-                <h3>jobType: @jobs[i].jobType</h3>
-                <h3>jobDescription: @jobs[i].jobDescription</h3>
-                <h3>jobAVGRate: @jobs[i].jobAVGRate</h3>
-                <h3>propCount: @jobs[i].propCount</h3>
-                <h3>creationDate: @jobs[i].creationDate</h3>
+        <div class="row mt-5">
+            @for (int i = 0; i < jobs.Count(); i++)
+            {
 
-                <!-- If Login as Freelancer -->
-                @if (User != null)
-                {
+                <div class=" col-md-4 col-12 p-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">@jobs[i].jobTitle</h5>
+                            <p>Creation At: @jobs[i].creationDate</p>
+                            <div class="row mt-3">
+                                <p class="card-text price col-md-4 col-6 m-0">@jobs[i].jobBudget EGP</p>
+                                <div class="col-md-8 col-6">
+                                    <i class="fa fa-star"></i><span>@jobs[i].jobAVGRate</span>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <p class="card-text col-md-4 col-6 ">@jobs[i].jobType</p>
+                                <p class="card-text col-md-4 col-6 ">Applayed: @jobs[i].propCount</p>
+                            </div>
+                            <p class="card-text">job Description :@jobs[i].jobDescription</p>
 
-                    <!-- Start of Save -->
-                    <form action="/Wall/SaveJob" method="post">
-                        <input style="display: none" type="text" name="userID" value="@User.userID" />
-                        <input style="display: none" type="text" name="jobID" value="@jobs[i].jobID" />
-                        <input style="display: none" type="text" name="jobTitle" value="@jobs[i].jobTitle" />
-                        @if (savedJobs.FindAll(s => s.jobID == jobs[i].jobID).Count() == 0)
-                        {
-                            <input type="submit" value="Save" />
-                        }
-                        else
-                        {
-                            <h5>Saved</h5>
-                        }
-                    </form>
-                    <!-- End of Save -->
+                            <hr>
+                            @if (User != null)
+                            {
+                                <div class="row mt-3">
 
 
-                    <!-- Start of Propsel -->
-                    <script type="text/javascript">
-                        function ToggleDiv(id) {
-                            console.log(id)
-                            if (document.getElementById(id).style.display == 'block')
-                                document.getElementById(id).style.display = 'none';
-                            else
-                                document.getElementById(id).style.display = 'block';
-                        }
-                    </script>
-                    if (proposels.FindAll(s => s.jobID == jobs[i].jobID).Count() == 0)
-                    {
-                        <button ID="btn" runat="server" Text="Show First Div"
-                                onclick="ToggleDiv(@jobs[i].jobID);">
-                            Give a Proposel
-                        </button>
-                    }
-                    else
-                    {
-                        <h5>Proposel Already Send</h5>
-                    }
-                    <br />
-                    <div id="@jobs[i].jobID" style="display: none;">
-                        <form action="/Wall/GivePropsel" method="post">
-                            <input style="display: none" type="text" name="userID" value="@User.userID" />
-                            <input style="display: none" type="text" name="jobID" value="@jobs[i].jobID" />
-                            Price: <input type="number" name="propPrice" />
-                            Describtion: <textarea type="text" name="propDescription"></textarea>
-                            <input type="submit" value="Submit" />
-                        </form>
+                                    <div class="col-md-4 col-6 m-0">
+                                        <!-- Start of Save -->
+                                        <form action="/Wall/SaveJob" method="post">
+                                            <input style="display: none" type="text" name="userID" value="@User.userID" />
+                                            <input style="display: none" type="text" name="jobID" value="@jobs[i].jobID" />
+                                            <input style="display: none" type="text" name="jobTitle" value="@jobs[i].jobTitle" />
+                                            @if (savedJobs.FindAll(s => s.jobID == jobs[i].jobID).Count() == 0)
+                                            {
+                                                <input type="submit" class="btn btn-primary" value="Save" />
+                                            }
+                                            else
+                                            {
+                                                <input type="submit" disabled class="btn btn-primary " value="Saved" />
+                                            }
+                                        </form>
+                                        <!-- End of Save -->
+                                    </div>
+
+                                    <div class="col-md-4 col-6 m-0">
+                                        <!-- Start of Propsel -->
+                                        <script type="text/javascript">
+                                            function ToggleDiv(id) {
+                                                console.log(id)
+                                                if (document.getElementById(id).style.display == 'block')
+                                                    document.getElementById(id).style.display = 'none';
+                                                else
+                                                    document.getElementById(id).style.display = 'block';
+                                            }
+                                        </script>
+                                        @if (proposels.FindAll(s => s.jobID == jobs[i].jobID).Count() == 0)
+                                        {
+                                            <button ID="btn" runat="server" Text="Show First Div"
+                                                    onclick="ToggleDiv(@jobs[i].jobID);" class="btn btn-primary">
+                                                Give a Proposel
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button ID="btn" disabled runat="server" Text="Show First Div"
+                                                    onclick="ToggleDiv(@jobs[i].jobID);" class="btn btn-primary">
+                                                Proposel Already Send
+                                            </button>
+                                        }
+                                        <br />
+                                        <div id="@jobs[i].jobID" style="display: none;">
+                                            <form action="/Wall/GivePropsel" method="post">
+                                                <input style="display: none" type="text" name="userID" value="@User.userID" />
+                                                <input style="display: none" type="text" name="jobID" value="@jobs[i].jobID" />
+                                                Price: <input type="number" class="form-control" name="propPrice" />
+                                                Describtion: <textarea type="text" class="form-control" name="propDescription"></textarea>
+                                                <input type="submit" value="Submit" class="btn btn-primary mt-2"/>
+                                            </form>
+                                        </div>
+                                        <!-- End of Propsel -->
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-12 col-6 m-0">
+                                        <!-- Start of Rate -->
+                                        @if (rates.FindAll(r => r.jobID == jobs[i].jobID).Count() != 0)
+                                        {
+                                            <h5>@rates.FindAll(r => r.jobID == jobs[i].jobID)[0].rate / 5</h5>
+                                        }
+                                        else
+                                        {
+                                            <form action="/Wall/GiveRate" method="post" class="form-inline">
+                                                <input style="display: none" type="text" name="userID" value="@User.userID" />
+                                                <input style="display: none" type="text" name="jobID" value="@jobs[i].jobID" />
+                                                <input type="number" max="5" name="rateToAdd" class="form-control"/>
+                                                <input type="submit" value="Rate" class="btn btn-primary ml-2"/>
+                                            </form>
+                                        }
+                                        <!-- End of Rate -->
+                                    </div>
+                                </div>
+                            }
+                        </div>
                     </div>
-                    <!-- End of Propsel -->
-
-
-
-                    <!-- Start of Rate -->
-                    if (rates.FindAll(r => r.jobID == jobs[i].jobID).Count() != 0)
-                    {
-                        <h5>@rates.FindAll(r => r.jobID == jobs[i].jobID)[0].rate / 5</h5>
-                    }
-                    else
-                    {
-                        <form action="/Wall/GiveRate" method="post">
-                            <input style="display: none" type="text" name="userID" value="@User.userID" />
-                            <input style="display: none" type="text" name="jobID" value="@jobs[i].jobID" />
-                            <input type="number" max="5" name="rateToAdd" />
-                            <input type="submit" value="Rate" />
-                        </form>
-                    }
-                    <!-- End of Rate -->
-                }
-                <!-- End of Jobs Card -->
-
-                <hr />
-
-            </div>
-        }
+                </div>
+            }
+        </div>
     </div>
 
 
@@ -216,73 +236,73 @@
                 </div>
                 <div class="modal-body">
                     <!-- Start of Register Form -->
-                        @using (Html.BeginForm("RegisterForm", "Wall", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                        {
-                            <div class=" mt-4">
-                                <label for="validationCustom01" class="form-label">First Name:</label>
-                                <input type="text" class="form-control" id="validationCustom01" name="fName" required>
-                                <div class="valid-feedback">
-                                    Looks good!
-                                </div>
+                    @using (Html.BeginForm("RegisterForm", "Wall", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <div class=" mt-4">
+                            <label for="validationCustom01" class="form-label">First Name:</label>
+                            <input type="text" class="form-control" id="validationCustom01" name="fName" required>
+                            <div class="valid-feedback">
+                                Looks good!
                             </div>
-                            <div class=" mt-2">
-                                <label for="validationCustom02" class="form-label">Last Name:</label>
-                                <input type="text" class="form-control" id="validationCustom02" name="lName" required>
-                                <div class="valid-feedback">
-                                    Looks good!
-                                </div>
+                        </div>
+                        <div class=" mt-2">
+                            <label for="validationCustom02" class="form-label">Last Name:</label>
+                            <input type="text" class="form-control" id="validationCustom02" name="lName" required>
+                            <div class="valid-feedback">
+                                Looks good!
                             </div>
-                            <div class=" mt-2">
-                                <label for="validationCustom02" class="form-label">User Name:</label>
-                                <input type="text" class="form-control" id="validationCustom02" name="userName" required>
-                                <div class="valid-feedback">
-                                    Looks good!
-                                </div>
+                        </div>
+                        <div class=" mt-2">
+                            <label for="validationCustom02" class="form-label">User Name:</label>
+                            <input type="text" class="form-control" id="validationCustom02" name="userName" required>
+                            <div class="valid-feedback">
+                                Looks good!
                             </div>
-                            <div class=" mt-2">
-                                <label for="validationCustom02" class="form-label">Email:</label>
-                                <input type="email" class="form-control" id="exampleInputEmail1" name="email">
+                        </div>
+                        <div class=" mt-2">
+                            <label for="validationCustom02" class="form-label">Email:</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" name="email">
+                        </div>
+                        <div class=" mt-2">
+                            <label for="validationCustom02" class="form-label">Phone Number:</label>
+                            <input type="text" class="form-control" id="validationCustom02" name="phoneNum" required>
+                            <div class="valid-feedback">
+                                Looks good!
                             </div>
-                            <div class=" mt-2">
-                                <label for="validationCustom02" class="form-label">Phone Number:</label>
-                                <input type="text" class="form-control" id="validationCustom02" name="phoneNum" required>
-                                <div class="valid-feedback">
-                                    Looks good!
-                                </div>
-                            </div>
+                        </div>
 
-                            <div class=" mt-2">
-                                <label for="validationCustom02" class="form-label">Password:</label>
-                                <input type="password" class="form-control" id="validationCustom02" name="userPassword" required>
-                                <div class="valid-feedback">
-                                    Looks good!
-                                </div>
+                        <div class=" mt-2">
+                            <label for="validationCustom02" class="form-label">Password:</label>
+                            <input type="password" class="form-control" id="validationCustom02" name="userPassword" required>
+                            <div class="valid-feedback">
+                                Looks good!
                             </div>
-                            <div class="mt-2">
-                                <label for="validationCustom02" class="form-label">Photo:</label>
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="inputGroupFile01" name="postedFile">
-                                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-                                </div>
+                        </div>
+                        <div class="mt-2">
+                            <label for="validationCustom02" class="form-label">Photo:</label>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="inputGroupFile01" name="postedFile">
+                                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
                             </div>
-                            <div class="mt-2">
-                                <label for="validationCustom02" class="form-label">Role:</label>
-                                <select class="form-control" aria-label="Default select example" name="role">
-                                    <option value="client">Client</option>
-                                    <option value="freelancer">Freelancer</option>
-                                </select>
+                        </div>
+                        <div class="mt-2">
+                            <label for="validationCustom02" class="form-label">Role:</label>
+                            <select class="form-control" aria-label="Default select example" name="role">
+                                <option value="client">Client</option>
+                                <option value="freelancer">Freelancer</option>
+                            </select>
 
-                            </div>
+                        </div>
 
-                            <button type="submit" class="btn btn-primary mt-2 col-12">Register</button>
+                        <button type="submit" class="btn btn-primary mt-2 col-12">Register</button>
 
-                        }
+                    }
                     <!-- End of Register Form -->
                 </div>
             </div>
         </div>
     </div>
-    
+
     <div class="modal fade" id="exampleModal_Login" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -327,7 +347,7 @@
     </div>
 
 
-    
+
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

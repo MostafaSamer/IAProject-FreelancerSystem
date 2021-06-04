@@ -36,6 +36,9 @@ namespace IAProject_FreelancerSystem.Controllers
                 return RedirectToAction("Index", "Wall");
             }
 
+            // Update Data
+            user = new UserDB().SelectwithId(user.userID.ToString());
+
             ViewData["User"] = user;
             return View();
         }
@@ -66,9 +69,9 @@ namespace IAProject_FreelancerSystem.Controllers
 
             // Action with Data
             User userToAdd = new User();
-
+            userToAdd = new UserDB().SelectwithId(formCollection["userID"]);
             // Upload File
-            if (Request.Files.Count > 0)
+            if (Request.Files["postedFile"].ContentLength > 0)
             {
                 HttpPostedFileBase postedFile = Request.Files["postedFile"];
                 string path = Server.MapPath("~/Uploads/");
@@ -126,7 +129,7 @@ namespace IAProject_FreelancerSystem.Controllers
             // All User
             List<User> list = new List<User>();
             list = new UserDB().SelectAll();
-            list = list.FindAll(u => u.userID != 1 );
+            list = list.FindAll(u => u.role != "admin" );
             ViewData["Users"] = list;
             return View();
         }

@@ -61,7 +61,6 @@
                 </div>
                 <div class=" mt-4">
                     <label for="validationCustom01" class="form-label">Job Type</label>
-                    @*@Html.TextBoxFor(p => p.jobType, new { Class = "form-control" })*@
                     @Html.DropDownListFor(p => p.jobType, new List<SelectListItem>
                        { new SelectListItem{Text="hourely", Value="Hourely"},
                          new SelectListItem{Text="Fixed", Value="Fixed"}}, 
