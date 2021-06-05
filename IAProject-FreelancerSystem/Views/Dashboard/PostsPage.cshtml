@@ -6,163 +6,103 @@
 
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="style.css">
-
-    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
-
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>"PostsPage"</title>
-
-</head>
-<body>
-
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="/Dashboard/profile">Freelance Project</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Dashboard/Profile">Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Dashboard/UsersPage">Users’ page</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/Dashboard/PostsPage">Posts page</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Dashboard/PostsRequests">Posts Requests</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Dashboard/Logout">Logout</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-
-    <div class="container body-content mt-5">
-        <h2>Posts Page</h2>
-        <table class="table table-striped">
-            <thead>
+<div class="container body-content mt-5">
+    <h2>Posts Page</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Client</th>
+                <th>Budget</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Rate</th>
+                <th>Date</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Jobs.Count(); i++)
+            {
                 <tr>
-                    <th>Title</th>
-                    <th>Client</th>
-                    <th>Budget</th>
-                    <th>Type</th>
-                    <th>Description</th>
-                    <th>Rate</th>
-                    <th>Date</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
+                    <th>
+                        @Jobs[i].jobTitle
+                    </th>
+                    <th>
+                        @Clients[i].fName @Clients[i].lName
+                    </th>
+                    <th>
+                        @Jobs[i].jobBudget
+                    </th>
+                    <th>
+                        @Jobs[i].jobType
+                    </th>
+                    <th>
+                        @Jobs[i].jobDescription
+                    </th>
+                    <th>
+                        @Jobs[i].jobAVGRate
+                    </th>
+                    <th>
+                        @Jobs[i].creationDate
+                    </th>
+                    <th>
+                        <form action="/Dashboard/PostsPage" method="post">
+                            <input style="display: none" type="text" name="jobID" value="@Jobs[i].jobID" />
+                            <input type="submit" value="Edit" class="btn btn-primary" />
+                        </form>
+                    </th>
+                    <th>
+                        <form action="/Dashboard/DeleteJob" method="post">
+                            <input style="display: none" type="text" name="jobID" value="@Jobs[i].jobID" />
+                            <input type="submit" value="Delete" class="btn btn-danger" />
+                        </form>
+                    </th>
                 </tr>
-            </thead>
-            <tbody>
-                @for (int i = 0; i < Jobs.Count(); i++)
-                {
-                    <tr>
-                        <th>
-                            @Jobs[i].jobTitle
-                        </th>
-                        <th>
-                            @Clients[i].fName @Clients[i].lName
-                        </th>
-                        <th>
-                            @Jobs[i].jobBudget
-                        </th>
-                        <th>
-                            @Jobs[i].jobType
-                        </th>
-                        <th>
-                            @Jobs[i].jobDescription
-                        </th>
-                        <th>
-                            @Jobs[i].jobAVGRate
-                        </th>
-                        <th>
-                            @Jobs[i].creationDate
-                        </th>
-                        <th>
-                            <form action="/Dashboard/PostsPage" method="post">
-                                <input style="display: none" type="text" name="jobID" value="@Jobs[i].jobID" />
-                                <input type="submit" value="Edit" class="btn btn-primary" />
-                            </form>
-                        </th>
-                        <th>
-                            <form action="/Dashboard/DeleteJob" method="post">
-                                <input style="display: none" type="text" name="jobID" value="@Jobs[i].jobID" />
-                                <input type="submit" value="Delete" class="btn btn-danger" />
-                            </form>
-                        </th>
-                    </tr>
-                }
+            }
 
-            </tbody>
-        </table>
-        <hr />
+        </tbody>
+    </table>
+    <hr />
 
 
-        @if (Job != null)
-        {
-            <div class="row justify-content-center mt-5">
-                <form class=" col-md-4" action="/Dashboard/UpdateJob" method="post">
-                    <h5>Update Data</h5>
-                    <input style="display: none" type="text" name="jobID" value="@Job.jobID" />
-                    <div class=" mt-4">
-                        <label for="validationCustom01" class="form-label">Title</label>
-                        <input type="text" class="form-control" id="validationCustom01" name="jobTitle" value="@Job.jobTitle" required>
-                        <div class="valid-feedback">
-                            Looks good!
-                        </div>
+    @if (Job != null)
+    {
+        <div class="row justify-content-center mt-5">
+            <form class=" col-md-4" action="/Dashboard/UpdateJob" method="post">
+                <h5>Update Data</h5>
+                <input style="display: none" type="text" name="jobID" value="@Job.jobID" />
+                <div class=" mt-4">
+                    <label for="validationCustom01" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="validationCustom01" name="jobTitle" value="@Job.jobTitle" required>
+                    <div class="valid-feedback">
+                        Looks good!
                     </div>
-                    <div class=" mt-2">
-                        <label for="validationCustom02" class="form-label">Budget</label>
-                        <input type="text" class="form-control" id="validationCustom02" name="jobBudget" value="@Job.jobBudget" required>
-                        <div class="valid-feedback">
-                            Looks good!
-                        </div>
+                </div>
+                <div class=" mt-2">
+                    <label for="validationCustom02" class="form-label">Budget</label>
+                    <input type="text" class="form-control" id="validationCustom02" name="jobBudget" value="@Job.jobBudget" required>
+                    <div class="valid-feedback">
+                        Looks good!
                     </div>
-                    <div class=" mt-2">
-                        <label for="validationCustom02" class="form-label">Type</label>
-                        <input type="text" class="form-control" id="validationCustom02" name="jobType" value="@Job.jobType" required>
-                        <div class="valid-feedback">
-                            Looks good!
-                        </div>
+                </div>
+                <div class=" mt-2">
+                    <label for="validationCustom02" class="form-label">Type</label>
+                    <input type="text" class="form-control" id="validationCustom02" name="jobType" value="@Job.jobType" required>
+                    <div class="valid-feedback">
+                        Looks good!
                     </div>
-                    <div class=" mt-2">
-                        <label for="validationCustom02" class="form-label">Description</label>
-                        <input type="text" class="form-control" id="exampleInputEmail1" name="jobDescription" value="@Job.jobDescription">
-                    </div>
+                </div>
+                <div class=" mt-2">
+                    <label for="validationCustom02" class="form-label">Description</label>
+                    <input type="text" class="form-control" id="exampleInputEmail1" name="jobDescription" value="@Job.jobDescription">
+                </div>
 
-                    <button type="submit" class="btn btn-primary mt-2 col-12">Confirm edit</button>
-                </form>
-            </div>
-        }
-
-    </div>
-
-    <div class="row justify-content-center mt-5">
-        <div class="col-md-4">
-            <hr />
-            <footer>
-                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-            </footer>
+                <button type="submit" class="btn btn-primary mt-2 col-12">Confirm edit</button>
+            </form>
         </div>
-    </div>
+    }
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
-</body>
-</html>
+</div>

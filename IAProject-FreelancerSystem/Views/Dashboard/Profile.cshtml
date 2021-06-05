@@ -3,150 +3,84 @@
     var user = ViewData["User"] as IAProject_FreelancerSystem.Models.User;
 
 }
-
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-    <link rel="stylesheet" href="style.css">
-
-    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
-
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>"PostsPage"</title>
-
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="/Dashboard/profile">Freelance Project</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/Dashboard/Profile">Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Dashboard/UsersPage">Users’ page</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Dashboard/PostsPage">Posts page</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Dashboard/PostsRequests">Posts Requests</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Dashboard/Logout">Logout</a>
-                    </li>
-                </ul>
+<div class="bg py-5">
+    <section class="container">
+        <div class=" body-content profile_header row align-items-center my-5 justify-content-center mt-3">
+            <div class="col-md-3 col-12">
+                <img src="@user.userPhoto" width="100%" />
+            </div>
+            <div class="col-md-3 col-12 mt-4">
+                <h3 style="font-weight: 700; ">@user.fName  @user.lName<p>@@ @user.userName</p></h3>
+                <hr>
+                <div class="d-flex align-items-center mt-2">
+                    <div><i class="far fa-envelope"></i></div>
+                    <p class="m-0">@user.email</p>
+                </div>
+                <div class="d-flex align-items-center mt-2">
+                    <div><i class="fas fa-phone"></i></div>
+                    <p class="m-0">@user.phoneNum</p>
+                </div>
             </div>
         </div>
-    </nav>
+    </section>
+</div>
 
-    
 
+<div class="row justify-content-center mt-5">
+    <div class="col-md-4">
+        @using (Html.BeginForm("UpdateAdmin", "Dashboard", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <input style="display: none" type="text" name="userID" value="@user.userID" />
+            <input style="display: none" type="text" name="role" value="admin" />
 
-    <div class="bg py-5">
-        <section class="container">
-            <div class=" body-content profile_header row align-items-center my-5 justify-content-center mt-3">
-                <div class="col-md-3 col-12">
-                    <img src="@user.userPhoto" width="100%" />
-                </div>
-                <div class="col-md-3 col-12 mt-4">
-                    <h3 style="font-weight: 700; ">@user.fName  @user.lName<p>@@ @user.userName</p></h3>
-                    <hr>
-                    <div class="d-flex align-items-center mt-2">
-                        <div><i class="far fa-envelope"></i></div>
-                        <p class="m-0">@user.email</p>
-                    </div>
-                    <div class="d-flex align-items-center mt-2">
-                        <div><i class="fas fa-phone"></i></div>
-                        <p class="m-0">@user.phoneNum</p>
-                    </div>
+            <h5>Edit your profile information</h5>
+            <div class=" mt-4">
+                <label for="validationCustom01" class="form-label">First name</label>
+                <input type="text" class="form-control" id="validationCustom01" name="fName" value="@user.fName" required>
+                <div class="valid-feedback">
+                    Looks good!
                 </div>
             </div>
-        </section>
+            <div class=" mt-2">
+                <label for="validationCustom02" class="form-label">Last name</label>
+                <input type="text" class="form-control" id="validationCustom02" name="lName" value="@user.lName" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class=" mt-2">
+                <label for="validationCustom02" class="form-label">User name</label>
+                <input type="text" class="form-control" id="validationCustom02" name="userName" value="@user.userName" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class=" mt-2">
+                <label for="validationCustom02" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" name="email" value="@user.email">
+            </div>
+
+            <div class=" mt-2">
+                <label for="validationCustom02" class="form-label">Phone number</label>
+                <input type="text" class="form-control" id="validationCustom02" name="phoneNum" value="@user.phoneNum" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+
+            <div class="mt-2">
+                <label for="validationCustom02" class="form-label">Photo:</label>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="inputGroupFile01" name="postedFile">
+                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                </div>
+            </div>
+
+            <div class="mb-3 mt-2">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" name="userPassword" value="@user.userPassword">
+            </div>
+            <button type="submit" class="btn btn-primary mt-2 col-12">Confirm edit</button>
+        }
     </div>
-
-
-    <div class="row justify-content-center mt-5">
-        <div class="col-md-4">
-            @using (Html.BeginForm("UpdateAdmin", "Dashboard", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
-                <input style="display: none" type="text" name="userID" value="@user.userID" />
-                <input style="display: none" type="text" name="role" value="admin" />
-
-                <h5>Edit your profile information</h5>
-                <div class=" mt-4">
-                    <label for="validationCustom01" class="form-label">First name</label>
-                    <input type="text" class="form-control" id="validationCustom01" name="fName" value="@user.fName" required>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
-                </div>
-                <div class=" mt-2">
-                    <label for="validationCustom02" class="form-label">Last name</label>
-                    <input type="text" class="form-control" id="validationCustom02" name="lName" value="@user.lName" required>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
-                </div>
-                <div class=" mt-2">
-                    <label for="validationCustom02" class="form-label">User name</label>
-                    <input type="text" class="form-control" id="validationCustom02" name="userName" value="@user.userName" required>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
-                </div>
-                <div class=" mt-2">
-                    <label for="validationCustom02" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" name="email" value="@user.email">
-                </div>
-
-                <div class=" mt-2">
-                    <label for="validationCustom02" class="form-label">Phone number</label>
-                    <input type="text" class="form-control" id="validationCustom02" name="phoneNum" value="@user.phoneNum" required>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
-                </div>
-
-                <div class="mt-2">
-                    <label for="validationCustom02" class="form-label">Photo:</label>
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="inputGroupFile01" name="postedFile">
-                        <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-                    </div>
-                </div>
-
-                <div class="mb-3 mt-2">
-                    <label for="exampleInputPassword1" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" name="userPassword" value="@user.userPassword">
-                </div>
-                <button type="submit" class="btn btn-primary mt-2 col-12">Confirm edit</button>
-            }
-        </div>
-    </div>
-
-
-    <div class="row justify-content-center mt-5">
-        <div class="col-md-4">
-            <hr />
-            <footer>
-                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-            </footer>
-        </div>
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
-</body>
-</html>
+</div>

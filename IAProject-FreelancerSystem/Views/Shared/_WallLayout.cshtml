@@ -1,0 +1,77 @@
+﻿@{ var User = Session["User"] as IAProject_FreelancerSystem.Models.User; }
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="style.css">
+
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>"PostsPage"</title>
+
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
+        <div class="container">
+            <a class="navbar-brand" href="/Dashboard/profile">Freelance Project</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    @if (User != null)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/Wall/SavedJobs">Your Saved Jobs</a>
+                        </li>
+                    }
+                </ul>
+                @if (User == null)
+                {
+                    <div class="my-2 my-lg-0">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal_Register">
+                            Register
+                        </button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal_Login">
+                            Login
+                        </button>
+                    </div>
+                }
+                else
+                {
+                    <!-- Start of Logout Form -->
+                    <form action="/Wall/LogoutForm" method="post">
+                        <input type="submit" class="btn btn-primary" value="Logout" />
+                    </form>
+                    <!-- End of Logout Form -->
+                }
+            </div>
+        </div>
+    </nav>
+    @RenderBody()
+
+
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-4">
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            </footer>
+        </div>
+    </div>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+</html>

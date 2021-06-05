@@ -23,7 +23,7 @@ namespace IAProject_FreelancerSystem.Controllers
                 {
                     return RedirectToAction("Profile", "Dashboard");
                 }
-                else if (user.role == "Freelancer")
+                else if (user.role == "freelancer")
                 {
                     return RedirectToAction("Index", "Wall");
                 }
@@ -50,7 +50,7 @@ namespace IAProject_FreelancerSystem.Controllers
                 {
                     return RedirectToAction("Profile", "Dashboard");
                 }
-                else if (user.role == "Freelancer")
+                else if (user.role == "freelancer")
                 {
                     return RedirectToAction("Index", "Wall");
                 }
@@ -75,7 +75,7 @@ namespace IAProject_FreelancerSystem.Controllers
                 {
                     return RedirectToAction("Profile", "Dashboard");
                 }
-                else if (user.role == "Freelancer")
+                else if (user.role == "freelancer")
                 {
                     return RedirectToAction("Index", "Wall");
                 }
@@ -115,7 +115,7 @@ namespace IAProject_FreelancerSystem.Controllers
                     {
                         return RedirectToAction("Profile", "Dashboard");
                     }
-                    else if (user.role == "Freelancer")
+                    else if (user.role == "freelancer")
                     {
                         return RedirectToAction("Index", "Wall");
                     }
@@ -156,7 +156,7 @@ namespace IAProject_FreelancerSystem.Controllers
                 {
                     return RedirectToAction("Profile", "Dashboard");
                 }
-                else if (user.role == "Freelancer")
+                else if (user.role == "freelancer")
                 {
                     return RedirectToAction("Index", "Wall");
                 }
@@ -214,7 +214,7 @@ namespace IAProject_FreelancerSystem.Controllers
                 {
                     return RedirectToAction("Profile", "Dashboard");
                 }
-                else if (user.role == "Freelancer")
+                else if (user.role == "freelancer")
                 {
                     return RedirectToAction("Index", "Wall");
                 }
@@ -226,10 +226,10 @@ namespace IAProject_FreelancerSystem.Controllers
             }
 
             // Action with Data
-            User userToAdd = new User();
+            User userToAdd = new UserDB().SelectwithId(user.userID.ToString());
 
             // Upload File
-            if (Request.Files.Count > 0)
+            if (Request.Files["postedFile"].ContentLength > 0)
             {
                 HttpPostedFileBase postedFile = Request.Files["postedFile"];
                 string path = Server.MapPath("~/Uploads/");
@@ -251,11 +251,47 @@ namespace IAProject_FreelancerSystem.Controllers
             userToAdd.userName = formCollection["userName"];
             userToAdd.email = formCollection["email"];
             userToAdd.phoneNum = formCollection["phoneNum"];
-            userToAdd.userPassword = formCollection["userPassword"];
             userToAdd.role = formCollection["role"];
             new UserDB().Update(userToAdd);
 
             ViewData["User"] = user;
+
+            return RedirectToAction("Profile");
+        }
+
+        public ActionResult ChangePassword(FormCollection formCollection)
+        {
+            User user = new User();
+            user = Session["User"] as IAProject_FreelancerSystem.Models.User;
+
+            // Users
+            if (Session["User"] != null)
+            {
+                if (user.role == "admin")
+                {
+                    return RedirectToAction("Profile", "Dashboard");
+                }
+                else if (user.role == "freelancer")
+                {
+                    return RedirectToAction("Index", "Wall");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Wall");
+            }
+
+            var oldPassword = formCollection["oldPassword"];
+            var newPassword = formCollection["newPassword"];
+            User userToEdit = new UserDB().SelectwithId(user.userID.ToString());
+            if(oldPassword == userToEdit.userPassword)
+            {
+                userToEdit.userPassword = newPassword;
+                new UserDB().Update(userToEdit);
+            }
+
+
 
             return RedirectToAction("Profile");
         }
@@ -272,7 +308,7 @@ namespace IAProject_FreelancerSystem.Controllers
                 {
                     return RedirectToAction("Profile", "Dashboard");
                 }
-                else if (user.role == "Freelancer")
+                else if (user.role == "freelancer")
                 {
                     return RedirectToAction("Index", "Wall");
                 }
@@ -309,7 +345,7 @@ namespace IAProject_FreelancerSystem.Controllers
                 {
                     return RedirectToAction("Profile", "Dashboard");
                 }
-                else if (user.role == "Freelancer")
+                else if (user.role == "freelancer")
                 {
                     return RedirectToAction("Index", "Wall");
                 }
@@ -347,7 +383,7 @@ namespace IAProject_FreelancerSystem.Controllers
                 {
                     return RedirectToAction("Profile", "Dashboard");
                 }
-                else if (user.role == "Freelancer")
+                else if (user.role == "freelancer")
                 {
                     return RedirectToAction("Index", "Wall");
                 }
@@ -394,6 +430,56 @@ namespace IAProject_FreelancerSystem.Controllers
             ViewData["proposalList"] = proposalList;
             ViewData["userList"] = userList;
             return View("ReceivedProposals");
+        }
+
+        public ActionResult DeletePost(FormCollection formCollection)
+        {
+            User user = new User();
+            user = Session["User"] as IAProject_FreelancerSystem.Models.User;
+            // Users
+            if (Session["User"] != null)
+            {
+                if (user.role == "admin")
+                {
+                    return RedirectToAction("Profile", "Dashboard");
+                }
+                else if (user.role == "freelancer")
+                {
+                    return RedirectToAction("Index", "Wall");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Wall");
+            }
+
+            var jobID = formCollection["jobID"];
+
+            new JobDB().Delete(jobID);
+
+            List<Rate> jobs_rate = new RateDB().SelectAll();
+            jobs_rate = jobs_rate.FindAll(r => r.jobID == Int32.Parse(jobID));
+            for(int i = 0; i<jobs_rate.Count(); i++)
+            {
+                new RateDB().Delete(jobs_rate[i].rateID.ToString());
+            }
+            
+            List<SavedJob> jobs_saved = new SavedJobDB().SelectAll();
+            jobs_saved = jobs_saved.FindAll(r => r.jobID == Int32.Parse(jobID));
+            for(int i = 0; i< jobs_saved.Count(); i++)
+            {
+                new SavedJobDB().Delete(jobs_saved[i].savedID.ToString());
+            }
+
+            List<Proposal> jobs_proposal = new ProposalsDB().SelectAll();
+            jobs_proposal = jobs_proposal.FindAll(r => r.jobID == Int32.Parse(jobID));
+            for(int i = 0; i< jobs_proposal.Count(); i++)
+            {
+                new ProposalsDB().Delete(jobs_proposal[i].propID.ToString());
+            }
+
+            return RedirectToAction("MyPosts");
         }
 
     }

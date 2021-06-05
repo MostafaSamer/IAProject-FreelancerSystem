@@ -25,7 +25,7 @@ namespace IAProject_FreelancerSystem.Controllers
                 {
                     return RedirectToAction("Profile", "FactoryLayout");
                 }
-                else if (user.role == "Freelancer")
+                else if (user.role == "freelancer")
                 {
                     return RedirectToAction("Index", "Wall");
                 }
@@ -56,7 +56,7 @@ namespace IAProject_FreelancerSystem.Controllers
                 {
                     return RedirectToAction("Profile", "FactoryLayout");
                 }
-                else if (user.role == "Freelancer")
+                else if (user.role == "freelancer")
                 {
                     return RedirectToAction("Index", "Wall");
                 }
@@ -115,7 +115,7 @@ namespace IAProject_FreelancerSystem.Controllers
                 {
                     return RedirectToAction("Profile", "FactoryLayout");
                 }
-                else if (user.role == "Freelancer")
+                else if (user.role == "freelancer")
                 {
                     return RedirectToAction("Index", "Wall");
                 }
@@ -200,7 +200,7 @@ namespace IAProject_FreelancerSystem.Controllers
                 {
                     return RedirectToAction("Profile", "FactoryLayout");
                 }
-                else if (user.role == "Freelancer")
+                else if (user.role == "freelancer")
                 {
                     return RedirectToAction("Index", "Wall");
                 }
@@ -249,7 +249,7 @@ namespace IAProject_FreelancerSystem.Controllers
                 {
                     return RedirectToAction("Profile", "FactoryLayout");
                 }
-                else if (user.role == "Freelancer")
+                else if (user.role == "freelancer")
                 {
                     return RedirectToAction("Index", "Wall");
                 }
@@ -299,7 +299,7 @@ namespace IAProject_FreelancerSystem.Controllers
                 {
                     return RedirectToAction("Profile", "FactoryLayout");
                 }
-                else if (user.role == "Freelancer")
+                else if (user.role == "freelancer")
                 {
                     return RedirectToAction("Index", "Wall");
                 }
@@ -343,7 +343,7 @@ namespace IAProject_FreelancerSystem.Controllers
                 {
                     return RedirectToAction("Profile", "FactoryLayout");
                 }
-                else if (user.role == "Freelancer")
+                else if (user.role == "freelancer")
                 {
                     return RedirectToAction("Index", "Wall");
                 }
@@ -383,7 +383,7 @@ namespace IAProject_FreelancerSystem.Controllers
                 {
                     return RedirectToAction("Profile", "FactoryLayout");
                 }
-                else if (user.role == "Freelancer")
+                else if (user.role == "freelancer")
                 {
                     return RedirectToAction("Index", "Wall");
                 }

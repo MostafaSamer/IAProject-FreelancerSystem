@@ -54,8 +54,16 @@ namespace IAProject_FreelancerSystem.Controllers
             List<Job> jobs = new List<Job>();
             jobs = new JobDB().SelectAll();
             jobs = jobs.FindAll(j => j.jobAdminAcceptance == "Accepted" && j.jobStatus == "Waitting");
-
             ViewData["Jobs"] = jobs;
+
+            List<User> clientsToSend = new List<User>();
+            List<User> clients = new UserDB().SelectAll();
+            for(int i = 0; i<jobs.Count(); i++)
+            {
+                clientsToSend.Add(new UserDB().SelectwithId(jobs[i].clientID.ToString()));
+            }
+
+            ViewData["clients"] = clientsToSend;
 
             return View();
         }
@@ -104,6 +112,15 @@ namespace IAProject_FreelancerSystem.Controllers
             jobs = jobs.FindAll(j => j.jobAdminAcceptance == "Accepted" && j.jobStatus == "Waitting");
 
             ViewData["Jobs"] = jobs;
+
+            List<User> clientsToSend = new List<User>();
+            List<User> clients = new UserDB().SelectAll();
+            for (int i = 0; i < jobs.Count(); i++)
+            {
+                clientsToSend.Add(new UserDB().SelectwithId(jobs[i].clientID.ToString()));
+            }
+
+            ViewData["clients"] = clientsToSend;
 
             return RedirectToAction("Index");
         }
@@ -161,6 +178,15 @@ namespace IAProject_FreelancerSystem.Controllers
 
             ViewData["Jobs"] = jobs;
 
+            List<User> clientsToSend = new List<User>();
+            List<User> clients = new UserDB().SelectAll();
+            for (int i = 0; i < jobs.Count(); i++)
+            {
+                clientsToSend.Add(new UserDB().SelectwithId(jobs[i].clientID.ToString()));
+            }
+
+            ViewData["clients"] = clientsToSend;
+
             return RedirectToAction("Index");
         }
         public ActionResult SaveJob(FormCollection formCollectiion)
@@ -199,6 +225,15 @@ namespace IAProject_FreelancerSystem.Controllers
             jobs = jobs.FindAll(j => j.jobAdminAcceptance == "Accepted" && j.jobStatus == "Waitting");
 
             ViewData["Jobs"] = jobs;
+
+            List<User> clientsToSend = new List<User>();
+            List<User> clients = new UserDB().SelectAll();
+            for (int i = 0; i < jobs.Count(); i++)
+            {
+                clientsToSend.Add(new UserDB().SelectwithId(jobs[i].clientID.ToString()));
+            }
+
+            ViewData["clients"] = clientsToSend;
 
             return RedirectToAction("Index");
         }
@@ -254,6 +289,15 @@ namespace IAProject_FreelancerSystem.Controllers
 
             ViewData["Jobs"] = jobs;
 
+            List<User> clientsToSend = new List<User>();
+            List<User> clients = new UserDB().SelectAll();
+            for (int i = 0; i < jobs.Count(); i++)
+            {
+                clientsToSend.Add(new UserDB().SelectwithId(jobs[i].clientID.ToString()));
+            }
+
+            ViewData["clients"] = clientsToSend;
+
             return RedirectToAction("Index");
         }
 
@@ -307,6 +351,15 @@ namespace IAProject_FreelancerSystem.Controllers
             jobs = jobs.FindAll(j => j.jobAdminAcceptance == "Accepted" && j.jobStatus == "Waitting");
 
             ViewData["Jobs"] = jobs;
+
+            List<User> clientsToSend = new List<User>();
+            List<User> clients = new UserDB().SelectAll();
+            for (int i = 0; i < jobs.Count(); i++)
+            {
+                clientsToSend.Add(new UserDB().SelectwithId(jobs[i].clientID.ToString()));
+            }
+
+            ViewData["clients"] = clientsToSend;
 
             return RedirectToAction("Index");
         }
@@ -396,6 +449,15 @@ namespace IAProject_FreelancerSystem.Controllers
             }
             ViewData["Jobs"] = jobs;
 
+            List<User> clientsToSend = new List<User>();
+            List<User> clients = new UserDB().SelectAll();
+            for (int i = 0; i < jobs.Count(); i++)
+            {
+                clientsToSend.Add(new UserDB().SelectwithId(jobs[i].clientID.ToString()));
+            }
+
+            ViewData["clients"] = clientsToSend;
+
             return View("Index");
         }
 
@@ -430,6 +492,15 @@ namespace IAProject_FreelancerSystem.Controllers
             }
 
             ViewData["SavedJobs"] = JobsToSend;
+
+            List<User> clientsToSend = new List<User>();
+            List<User> clients = new UserDB().SelectAll();
+            for (int i = 0; i < JobsToSend.Count(); i++)
+            {
+                clientsToSend.Add(new UserDB().SelectwithId(JobsToSend[i].clientID.ToString()));
+            }
+
+            ViewData["clients"] = clientsToSend;
 
             return View();
         }

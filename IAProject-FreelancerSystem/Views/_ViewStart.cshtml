@@ -1,3 +1,15 @@
-﻿@*@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}*@
+﻿@{
+    string CurrentControllerName = Convert.ToString(HttpContext.Current.Request.RequestContext.RouteData.Values["Controller"]);
+    switch (CurrentControllerName)
+    {
+        case "Dashboard":
+            Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+            break;
+        case "FactoryLayout":
+            Layout = "~/Views/Shared/_FactouryLayout.cshtml";
+            break;
+        default:
+            Layout = "~/Views/Shared/_WallLayout.cshtml";
+            break;
+    }
+}
